@@ -101,6 +101,8 @@ class ConstantNodeRPC {
   GetCommitteeList(){}
   
   CanPubkeyStake(){}
+
+  GetEncryptionFlag(token = []){}
 }
 
 // Implement virtual method
