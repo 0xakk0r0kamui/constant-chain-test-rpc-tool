@@ -61,7 +61,7 @@ class ConstantNodeRPC {
    * fee - number
    * hasPrivacy - number (only 0|1)
    */
-  CreateAndSendTransaction(privateKey = "", paymentAddress = [], fee = 0, hasPrivacy = 1) {}
+  CreateAndSendTransaction(privateKey = "", paymentAddress = [], fee = 100, hasPrivacy = 0) {}
 
   /**
    * transactionHash - string
@@ -99,10 +99,13 @@ class ConstantNodeRPC {
   GetCandidateList() {}
 
   GetCommitteeList(){}
-  
-  CanPubkeyStake(){}
+
+  CanPubkeyStake(pubkey = ""){}
 
   GetEncryptionFlag(token = []){}
+  CreateAndSendVoteDCBBoardTransaction(privateKeys,magicParams1, magicParams2, magicParams3,voteInfo){}
+  GetListCustomTokenBalance(paymentAddress){}
+  CreateAndSendCustomTokenTransaction(privateKeys,magicParams1, magicParams2, magicParams3,voteInfo){}
 }
 
 // Implement virtual method
