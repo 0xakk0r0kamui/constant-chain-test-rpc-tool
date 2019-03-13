@@ -131,7 +131,6 @@ class ConstantNodeRPC {
 
   GetCommitteeList() {}
 
-<<<<<<< HEAD
   CanPubkeyStake(pubkey = ""){}
 
   GetEncryptionFlag(token = []){}
@@ -142,9 +141,6 @@ class ConstantNodeRPC {
   TestAppendListDCBBoard(paymentlist){}
   SaveCheckPoint(){}
   LoadCheckPoint(){}
-=======
-  CanPubkeyStake(pubkey = "") {}
->>>>>>> af12262fb237482d62362acbaa6746c4115261ea
 }
 
 // Implement virtual method
