@@ -1,7 +1,7 @@
 let cs = require('./votingBoard-profile');
 let rpcfunc = require("../../constant-rpc/constant_rpc");
-let shard = new rpcfunc("192.168.0.143", 9334);
-// let shard = new rpcfunc("127.0.0.1", 9334);
+// let shard = new rpcfunc("192.168.0.143", 9334);
+let shard = new rpcfunc("127.0.0.1", 9334);
 let helper = require('./helper');
 describe('Send money', async function () {
     let flagResponse = null;
@@ -65,7 +65,29 @@ describe('Send money', async function () {
             console.log("--------------------------------",txID);
         }
     });
-    it.only('Save check point',async function(){
+    it('Count',async function(){
+        this.timeout(Number.MAX_SAFE_INTEGER);
+        let currentBlockHeight = await shard.GetBlockCount(0);
+        let waitForResult = async () => {
+            return new Promise((resolve) => {
+                var getResult = async () => {
+                    flagResponse = await shard.GetBlockCount(0);
+                    if (flagResponse.Response.Result - currentBlockHeight.Response.Result > 3) {
+                        resolve(flagResponse.Response.Result);
+                    } else {
+                        setTimeout(async () => {
+                            console.log("Still alive!")
+                            getResult()
+                        }, 3000)
+                    }
+                }
+                getResult()
+            })
+        }
+        let res = await waitForResult();
+        console.log(res);
+    });
+    it('Save check point',async function(){
         this.timeout(Number.MAX_SAFE_INTEGER);
         flagResponse = await shard.SaveCheckPoint();
         console.log(flagResponse)

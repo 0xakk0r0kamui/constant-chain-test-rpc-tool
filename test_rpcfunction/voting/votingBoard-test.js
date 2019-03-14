@@ -1,6 +1,6 @@
 let rpcfunc = require("../../constant-rpc/constant_rpc");
-let shard = new rpcfunc("192.168.0.143", 9334);
-// let shard = new rpcfunc("127.0.0.1", 9334);
+// let shard = new rpcfunc("192.168.0.143", 9334);
+let shard = new rpcfunc("127.0.0.1", 9334);
 let assert = require('assert');
 let cs = require('./votingBoard-profile');
 let helper = require('./helper');
@@ -20,7 +20,7 @@ describe('Test voting Board', async function () {
     //     flagResponse = await shard.LoadCheckPoint()
     //     console.log(flagResponse)
     // });
-    it.skip('Get number of Constant', async function () {
+    it('Get number of Constant', async function () {
         this.timeout(Number.MAX_SAFE_INTEGER);
         for (let i = 0; i < numberOfVoter; i++) {
             let waitForResult = async () => {
@@ -226,6 +226,7 @@ describe('Test voting Board', async function () {
                         resolve(flagResponse.Response.Result);
                     } else {
                         setTimeout(async () => {
+                            console.log("Still alive")
                             getResult()
                         }, 3000)
                     }
