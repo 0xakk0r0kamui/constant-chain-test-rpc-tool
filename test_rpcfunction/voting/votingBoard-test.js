@@ -76,25 +76,6 @@ describe('Test voting Board', async function () {
     });
     it('Voting Board and return vote transaction', async function () {
         this.timeout(Number.MAX_SAFE_INTEGER);
-        let waitForResult = async () => {
-            return new Promise((resolve) => {
-                var getResult = async () => {
-                    console.log('Check EncryptionFlag')
-                    flagResponse = await shard.GetEncryptionFlag(["dcb"])
-                    console.log(flagResponse)
-                    if ((flagResponse.Error == null) && (flagResponse.Response.Result.DCBFlag == cs.DCBVotingFlag)) {
-                        resolve(flagResponse.Response.Result)
-                    } else {
-                        setTimeout(() => {
-                            console.log('re-call after 5s')
-                            getResult()
-                        }, 3000)
-                    }
-                }
-                getResult()
-            })
-        }
-        let res = await waitForResult();
         for (let j = 0; j < numberOfVoter; j++) {
             let voteAmount = 5;
             let voteInfo = {
@@ -155,6 +136,7 @@ describe('Test voting Board', async function () {
             if (res == numberOfConstant[i]) {
                 resbool = false;
             }
+            console.log("Account ", i, ": ", res);
         }
         assert.ok(resbool, "Why my value dont change dude?")
     });

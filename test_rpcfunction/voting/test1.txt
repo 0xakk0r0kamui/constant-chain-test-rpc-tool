@@ -1,0 +1,5 @@
+setVar x 3443
+compare x 3444
+saveCheckpoint c1
+loadCheckpoint c1
+
