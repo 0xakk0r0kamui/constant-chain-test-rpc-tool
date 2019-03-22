@@ -1,11 +1,26 @@
 let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
-var ncp = require('ncp').ncp;
 const rimraf = require('rimraf')
 
 /*
+    setVarValue {
+        input: typename varname value
+        output: true/false
+    }
+    checkSingleValue{
+        input: typename varname
+        output: value
+    }
+    checkAllValue{
+        input:
+        output: value
+    }
+    setVarVar {
+        input: varnameToSet varnameOfValue
+        SIDEEFFECT: set varnameToSet
+    }
     sendMoney {
-        input: user1 user2...
+        input: sender receiver
         SIDEEFFECT: change MoG[user]/ MoB[user]
     }
     sendDCBToken{
@@ -24,23 +39,6 @@ const rimraf = require('rimraf')
         input: checkpointname
         output: true/false
     }
-    setVarValue {
-        input: varname value
-        output: true/false
-    }
-    setVarVar {
-        input: varnameToSet varnameOfValue
-        SIDEEFFECT: set varnameToSet
-    }
-    checkSingleValue{
-        input: varname
-        output: true/false
-    }
-    checkAllValue{
-        input: none
-        output: true/false
-    }
-    //res user1 user2 ...
     getNumberConstant{
         input: user1 user2...
         output: true/false

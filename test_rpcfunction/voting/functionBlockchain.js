@@ -1,18 +1,33 @@
-WWW = {}
-DCBB = {}
-GOVB = {}
+BBB = {}
+DCBListB = {}
+GOVListB = {}
+DCBTokenB = {}
+GOVTokenB = {}
 MoB = {}
 VoteProposalB = {}
 VoteBoardB = {}
+PrivateB = {}
+PaymentB = {}
 
+var ncp = require('ncp').ncp;
 ncp.limit = 16;
 sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
-exports.setVar = async function (params) {
-    varName = params[0]
-    value = params[1]
-    WWW[varName] = value
+exports.test = async function(params) {
+}
+
+exports.setVarValue = async function(params) {
+    varType = params[0] + 'B'
+    varName = params[1]
+    value = params[2]
+    global[varName][varName] = value
     return true
+}
+
+exports.checkSingleValue = async function(params) {
+    varType = params[0] + 'B'
+    varName = params[1]
+    return  global[varType][varName]
 }
 
 exports.compare = async function (params) {
