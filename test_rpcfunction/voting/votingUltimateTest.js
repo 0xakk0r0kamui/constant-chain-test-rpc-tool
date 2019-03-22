@@ -2,8 +2,6 @@ let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
 var ncp = require('ncp').ncp;
 const rimraf = require('rimraf')
-ncp.limit = 16;
-sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
 /*
     sendMoney {
@@ -26,9 +24,13 @@ sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/
         input: checkpointname
         output: true/false
     }
-    setVar {
+    setVarValue {
         input: varname value
         output: true/false
+    }
+    setVarVar {
+        input: varnameToSet varnameOfValue
+        SIDEEFFECT: set varnameToSet
     }
     checkSingleValue{
         input: varname
@@ -40,29 +42,29 @@ sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/
     }
     //res user1 user2 ...
     getNumberConstant{
-        input: res user1 user2...
+        input: user1 user2...
         output: true/false
-        SIDEEFFECT: set value of res
+        SIDEEFFECT: set MoB[user]
     }
     getNumberDCB/GOVToken{
-        input: res user1 user2...
+        input: user1 user2...
         output: true/false
-        SIDEEFFECT: set value of res
+        SIDEEFFECT: set DCBB[user]/ GOVB[user]
     }
     voteDCB/GOVBoard {
         input: voter votee
         output: true/false
         SIDEEFFECT: VoteBoard[votee], DCBB/GOVB/DCBG/GOVG[voter]
     }
-    getListBoard{
+    getListDCB/GOVBoard{
         input: res
         output: true/false
-        SIDEEFFECT: set value to res
+        SIDEEFFECT: set DCB/GOVBoard
     }
-    getBlockCount{
-        input: res
+    getBlockCount{ // Doesn't need this function!!! Use waitFor... is safer
+        input:
         output: true/false
-        SIDEEFFECT: set value to res
+        SIDEEFFECT: set BlockHeightB
     }
     submitDCB/GOVProposal {
         input: var
@@ -72,8 +74,10 @@ sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/
         SIDEEFFECT: VoteProposal[proposal]
     }
     waitForNewConstitution{
+        SIDEEFFECT: set DCB/GOVG[alluser], BlockHeight, Constitution
     }
     waitForNewBoard{
+        SIDEEFFECT: set DCB/GOVG[alluser], BlockHeight, ListDCB/GOVBoardB/G
     }
 */
 
