@@ -118,5 +118,40 @@ exports.voteDCBBoard = async function(params) {
     let voter = params[0]
     let votee = params[1]
     let amount = params[2]
-    VoteBoard[votee] +=  
+    VoteBoard[votee] += amount
+    DCBTokenG[voter] -= amount
+}
+
+exports.voteGOVBoard = async function(params) {
+    let voter = params[0]
+    let votee = params[1]
+    let amount = params[2]
+    VoteBoard[votee] += amount
+    GOVTokenG[voter] -= amount
+}
+
+exports.getListDCBBoard = async function(params) {
+    return DCBListG
+}
+
+exports.getListDCBBoard = async function(params) {
+    return GOVListG
+}
+
+exports.submitDCBProposal = async function(params){
+    let proposalName = params[0]
+    let proposalParams = params[1]
+}
+
+exports.submitGOVProposal = async function(params){
+    let proposalName = params[0]
+    let proposalParams = params[1]
+}
+
+exports.waitForNewConstitution = async function (params) {
+
+}
+
+exports.waitForNewBoard = async function(params) {
+
 }
