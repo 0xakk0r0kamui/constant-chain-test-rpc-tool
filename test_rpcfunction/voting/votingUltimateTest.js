@@ -2,8 +2,6 @@ let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
 var ncp = require('ncp').ncp;
 const rimraf = require('rimraf')
-ncp.limit = 16;
-sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
 /*
     sendMoney {

@@ -1,4 +1,7 @@
 WWW = {}
+ncp.limit = 16;
+sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
+
 exports.setVar = async function (params) {
     varName = params[0]
     value = params[1]
@@ -6,7 +9,7 @@ exports.setVar = async function (params) {
     return true
 }
 
-exports.compare = async function compare(params) {
+exports.compare = async function (params) {
     varName = params[0]
     value = params[1]
     if (WWW[varName] == value) {
@@ -16,7 +19,7 @@ exports.compare = async function compare(params) {
     return false
 }
 
-async function saveCheckpoint(params) {
+exports.saveCheckpoint = async function (params) {
     dataDir = sourceDir + 'data'
     checkpointDir = sourceDir + params[0]
     err = rimraf.sync(checkpointDir);
@@ -35,7 +38,7 @@ async function saveCheckpoint(params) {
     return x
 }
 
-async function loadCheckpoint(params) {
+exports.loadCheckpoint = async function (params) {
     dataDir = sourceDir + 'data'
     checkpointDir = sourceDir + params[0]
     rimraf.sync(dataDir);
@@ -55,7 +58,7 @@ async function loadCheckpoint(params) {
     return f
 }
 
-async function GetNumberConstant(params) {
+exports.GetNumberConstant = async function (params) {
     for (let i = 0; i< params.length; i++){
         let waitForResult = async () => {
             return new Promise((resolve) => {

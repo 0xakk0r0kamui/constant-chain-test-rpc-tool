@@ -2,4 +2,9 @@ setVar x 3443
 compare x 3444
 saveCheckpoint c1
 loadCheckpoint c1
+setVar private1 fsdfodsfjdsodsjfosdifjsofi 
+setVar payment1 sdffdsffdsfdsfs
+setVar private2fsdfodsfjdsodsjfosdifjsofi 
+setVar payment2 sdffdsffdsfdsfs
+voteBoard private1 payment2
 
