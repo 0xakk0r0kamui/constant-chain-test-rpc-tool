@@ -21,7 +21,7 @@ exports.compare = async function (params) {
     if (WWW[varName] == value) {
         return true
     }
-    console.log("wrong value! Expect " + varName+ "="+ value+ " actual=" + WWW[varName])
+    console.log("wrong value! Expect " + varName + "=" + value + " actual=" + WWW[varName])
     return false
 }
 
@@ -49,7 +49,7 @@ exports.loadCheckpoint = async function (params) {
     checkpointDir = sourceDir + params[0]
     rimraf.sync(dataDir);
     console.log(dataDir)
-    f = await new Promise( function(resolve, reject) {
+    f = await new Promise(function (resolve, reject) {
         ncp(checkpointDir, dataDir, function (err) {
             if (err) {
                 console.log("loadcheckpoint error")
@@ -65,7 +65,7 @@ exports.loadCheckpoint = async function (params) {
 }
 
 exports.GetNumberConstant = async function (params) {
-    for (let i = 0; i< params.length; i++){
+    for (let i = 0; i < params.length; i++) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
@@ -87,5 +87,23 @@ exports.GetNumberConstant = async function (params) {
         numberOfConstant[i] = res;
     }
 }
-
-
+exports.SubmitDCBProposal = async function (params) {
+    for (let i = 0; i< params.length; i++) {
+        let waitForResult = async () => {
+            return new Promise((resolve) => {
+                var getResult = async () => {
+                    flagResponse = await shard.CreateAndSendSubmitDCBProposalTx(params);
+                    if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                        resolve(flagResponse.Response.Result)
+                    } else {
+                        setTimeout(() => {
+                            getResult();
+                        }, 3000)
+                    }
+                }
+                getResult()
+            })
+        }
+        let res = await waitForResult();
+    }
+}
