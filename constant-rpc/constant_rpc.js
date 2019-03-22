@@ -109,14 +109,14 @@ class ConstantNodeRPC {
 
   ListCustomToken() {}
 
-  ListUnspentCustomToken(paymentAddress = "", tokenID = "" ) {}
+  ListUnspentCustomToken(paymentAddress = "", tokenID = "") {}
 
   CreateAndSendPrivacyCustomTokenTransaction(privateKey = "", [], fee = 0, hasPrivacy = 1, tokenParms = []) {}
 
   ListPrivacyCustomToken() {}
 
   GetListPrivacyCustomTokenBalance(privateKey = "") {}
-  
+
   /**
    * 
    */
@@ -131,17 +131,19 @@ class ConstantNodeRPC {
 
   GetCommitteeList() {}
 
-  CanPubkeyStake(pubkey = ""){}
+  CanPubkeyStake(pubkey = "") {}
 
-  GetEncryptionFlag(token = []){}
-  CreateAndSendVoteDCBBoardTransaction(privateKeys,magicParams1, magicParams2, magicParams3,voteInfo){}
-  GetListCustomTokenBalance(paymentAddress){}
-  CreateAndSendCustomTokenTransaction(privateKeys,magicParams1, magicParams2, magicParams3,voteInfo){}
-  GetListDCBBoard(){}
-  TestAppendListDCBBoard(paymentlist){}
-  SaveCheckPoint(){}
-  LoadCheckPoint(){}
-  CreateAndSendSubmitDCBProposalTx(params){}
+  GetEncryptionFlag(token = []) {}
+  CreateAndSendVoteDCBBoardTransaction(privateKeys, magicParams1, magicParams2, magicParams3, voteInfo) {}
+  CreateAndSendVoteGOVBoardTransaction(privateKeys, magicParams1, magicParams2, magicParams3, voteInfo) {}
+  GetListCustomTokenBalance(paymentAddress) {}
+  CreateAndSendCustomTokenTransaction(privateKeys, magicParams1, magicParams2, magicParams3, voteInfo) {}
+  GetListDCBBoard() {}
+  TestAppendListDCBBoard(paymentlist) {}
+  SaveCheckPoint() {}
+  LoadCheckPoint() {}
+  CreateAndSendSubmitDCBProposalTx(params) {}
+  CreateAndSendVoteProposal(params) {}
 }
 
 // Implement virtual method

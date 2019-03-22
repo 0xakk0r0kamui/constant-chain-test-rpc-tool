@@ -13,10 +13,9 @@ var ncp = require('ncp').ncp;
 ncp.limit = 16;
 sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
-exports.test = async function(params) {
-}
+exports.test = async function (params) {}
 
-exports.setVarValue = async function(params) {
+exports.setVarValue = async function (params) {
     varType = params[0] + 'B'
     varName = params[1]
     value = params[2]
@@ -24,10 +23,10 @@ exports.setVarValue = async function(params) {
     return true
 }
 
-exports.checkSingleValue = async function(params) {
+exports.checkSingleValue = async function (params) {
     varType = params[0] + 'B'
     varName = params[1]
-    return  global[varType][varName]
+    return global[varType][varName]
 }
 
 exports.compare = async function (params) {
@@ -79,6 +78,23 @@ exports.loadCheckpoint = async function (params) {
     return f
 }
 
+exports.GetTransactionByHash = async function (params) {
+    return new Promise((resolve) => {
+        var getResult = async () => {
+            flagResponse = await shard.GetTransactionByHash(params);
+            if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                resolve(flagResponse.Response.Result)
+            } else {
+                setTimeout(() => {
+                    console.log("Spamming until get transaction by hash");
+                    getResult();
+                }, 5000)
+            }
+        }
+        getResult()
+    })
+}
+
 exports.GetNumberConstant = async function (params) {
     for (let i = 0; i < params.length; i++) {
         let waitForResult = async () => {
@@ -102,23 +118,64 @@ exports.GetNumberConstant = async function (params) {
         numberOfConstant[i] = res;
     }
 }
-exports.SubmitDCBProposal = async function (params) {
-    for (let i = 0; i< params.length; i++) {
-        let waitForResult = async () => {
-            return new Promise((resolve) => {
-                var getResult = async () => {
-                    flagResponse = await shard.CreateAndSendSubmitDCBProposalTx(params);
-                    if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
-                        resolve(flagResponse.Response.Result)
-                    } else {
-                        setTimeout(() => {
-                            getResult();
-                        }, 3000)
-                    }
+
+exports.SubmitTransaction = async function (params, fn) {
+    let waitForResult = async () => {
+        return new Promise((resolve) => {
+            var getResult = async () => {
+                flagResponse = await fn(params);
+                if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                    resolve(flagResponse.Response.Result)
+                } else {
+                    setTimeout(() => {
+                        console.log("Spamming until get transaction hash");
+                        getResult();
+                    }, 5000)
                 }
-                getResult()
-            })
-        }
-        let res = await waitForResult();
+            }
+            getResult()
+        })
     }
+    let res = await waitForResult();
+    await exports.GetTransactionByHash(res)
+}
+
+exports.SubmitDCBProposal = async function (params) {
+    await exports.SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
+}
+
+
+
+exports.SubmitGOVProposal = async function (params) {
+    await exports.SubmitProposal(params, shard.CreateAndSendSubmitGOVProposalTx)
+}
+
+exports.VoteDCBProposal = async function (params) {
+    await exports.SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+}
+
+exports.VoteGOVProposal = async function (params) {
+    await exports.SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+}
+
+exports.VoteDCBBoard = async function (params) {
+    await exports.SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
+}
+
+exports.VoteGOVBoard = async function (params) {
+    await exports.SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
+}
+
+exports.GetListDCBBoard = async function (params) {
+    await exports.SubmitTransaction(params, shard.GetListDCBBoard)
+}
+
+exports.GetListDCBBoard = async function (params) {
+    let res = await shard.GetListDCBBoard();
+    console.log(res.Response.Result);
+}
+
+exports.GetListGOVBoard = async function (params) {
+    let res = await shard.GetListGOVBoard();
+    console.log(res.Response.Result);
 }
