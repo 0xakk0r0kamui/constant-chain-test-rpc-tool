@@ -141,6 +141,7 @@ class ConstantNodeRPC {
   TestAppendListDCBBoard(paymentlist){}
   SaveCheckPoint(){}
   LoadCheckPoint(){}
+  CreateAndSendSubmitDCBProposalTx(){}
 }
 
 // Implement virtual method
