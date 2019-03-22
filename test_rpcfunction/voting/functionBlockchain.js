@@ -8,6 +8,8 @@ VoteProposalB = {}
 VoteBoardB = {}
 PrivateB = {}
 PaymentB = {}
+ConstitutionB = {}
+ProposalTxIDB = {}
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -28,6 +30,10 @@ exports.checkSingleValue = async function(params) {
     varType = params[0] + 'B'
     varName = params[1]
     return  global[varType][varName]
+}
+
+exports.checkAllValue = async function(params) {
+    return [DCBListB , GOVListB , DCBTokenB, GOVTokenB, MoB , VoteProposalB , VoteBoardB , PrivateB , PaymentB]
 }
 
 exports.compare = async function (params) {

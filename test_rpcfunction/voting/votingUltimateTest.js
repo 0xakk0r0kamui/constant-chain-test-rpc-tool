@@ -15,9 +15,9 @@ const rimraf = require('rimraf')
         input:
         output: value
     }
-    setVarVar {
-        input: varnameToSet varnameOfValue
-        SIDEEFFECT: set varnameToSet
+    setNewUser {
+        input: username privateKey paymentAddress
+        SIDEEFFECT: change PrivateB/G[username]  PaymentB/G[username]
     }
     sendMoney {
         input: sender receiver
@@ -41,23 +41,23 @@ const rimraf = require('rimraf')
     }
     getNumberConstant{
         input: user1 user2...
-        output: true/false
+        output: res{user1: amount, user2: amount}
         SIDEEFFECT: set MoB[user]
     }
     getNumberDCB/GOVToken{
         input: user1 user2...
         output: true/false
-        SIDEEFFECT: set DCBB[user]/ GOVB[user]
+        SIDEEFFECT: set DCBBoardB/GOVBoardB[user]
     }
     voteDCB/GOVBoard {
-        input: voter votee
+        input: voter votee amount
         output: true/false
-        SIDEEFFECT: VoteBoard[votee], DCBB/GOVB/DCBG/GOVG[voter]
+        SIDEEFFECT: VoteBoard[votee], DCBTokenB/GOVTokenB/DCBTokenG/GOVTokenG[voter]
     }
     getListDCB/GOVBoard{
         input: res
         output: true/false
-        SIDEEFFECT: set DCB/GOVBoard
+        SIDEEFFECT: set DCB/GOVBoardB
     }
     getBlockCount{ // Doesn't need this function!!! Use waitFor... is safer
         input:
@@ -65,10 +65,10 @@ const rimraf = require('rimraf')
         SIDEEFFECT: set BlockHeightB
     }
     submitDCB/GOVProposal {
-        input: var
+        input: proposalname proposalparams
     }
     voteDCB/GOVProposal {
-        input: user proposal
+        input: user proposalname
         SIDEEFFECT: VoteProposal[proposal]
     }
     waitForNewConstitution{
