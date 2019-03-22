@@ -1,4 +1,10 @@
 WWW = {}
+DCBB = {}
+GOVB = {}
+MoB = {}
+VoteProposalB = {}
+VoteBoardB = {}
+
 ncp.limit = 16;
 sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 

@@ -1,5 +1,11 @@
 
 GGG = {}
+DCBG = {}
+DCB = {}
+MoG = {}
+VoteProposalG = {}
+VoteBoardG = {}
+
 exports.setVar = async function setVar(params) {
     varName = params[0]
     value = params[1]
