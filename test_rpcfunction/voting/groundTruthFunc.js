@@ -126,7 +126,7 @@ exports.getNumberOfDCBToken = async function(params) {
     }
     return res
 }
-j
+
 exports.getNumberOfGOVToken = async function(params) {
     res = {}
     for (let i = 0; i< params.length; i++) {

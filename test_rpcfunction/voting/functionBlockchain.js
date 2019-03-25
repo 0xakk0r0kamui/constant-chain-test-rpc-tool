@@ -35,6 +35,14 @@ var ncp = require('ncp').ncp;
 ncp.limit = 16;
 sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
+let rpcfunc = require("../../constant-rpc/constant_rpc");
+let shard = new rpcfunc("127.0.0.1", 9334);
+let assert = require('assert');
+let cs = require('./votingBoard-profile');
+let helper = require('./helper');
+mode = "SHARD"
+
+
 exports.test = async function (params) {}
 
 exports.setVarValue = async function (params) {
@@ -139,7 +147,7 @@ SubmitTransaction = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
-                flagResponse = await fn(params);
+                flagResponse = await fn.call(shard, params);
                 if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
@@ -196,7 +204,7 @@ waitForNewConstitution = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
-                flagResponse = await fn(params);
+                flagResponse = await fn.call(shard, params);
                 if ((flagResponse.Error == null) && (flagResponse.Response.Error == null) && ((flagResponse.Response.Result.ConstitutionInfo.ConstitutionIndex > currentConstitutionIndex))) {
                     resolve(flagResponse.Response.Result.ConstitutionInfo.ConstitutionIndex)
                 } else {
