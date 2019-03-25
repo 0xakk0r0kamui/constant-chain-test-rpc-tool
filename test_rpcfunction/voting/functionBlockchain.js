@@ -35,6 +35,13 @@ var ncp = require('ncp').ncp;
 ncp.limit = 16;
 sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
 
+let rpcfunc = require("../../constant-rpc/constant_rpc");
+let shard = new rpcfunc("127.0.0.1", 9334);
+let assert = require('assert');
+let cs = require('./votingBoard-profile');
+let helper = require('./helper');
+mode = "SHARD"
+
 exports.test = async function (params) {}
 
 exports.setVarValue = async function (params) {

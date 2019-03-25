@@ -1,4 +1,4 @@
-setNewUser huu
+setNewUser huu private1 payment1
 
 sendMoney huu hy 300
 sendDCBToken huu hy 95
