@@ -145,7 +145,10 @@ class ConstantNodeRPC {
   SaveCheckPoint() {}
   LoadCheckPoint() {}
   CreateAndSendSubmitDCBProposalTx(params) {}
+  CreateAndSendSubmitGOVProposalTx(params) {}
   CreateAndSendVoteProposal(params) {}
+  GetDCBConstitution() {}
+  GetGOVConstitution() {}
 }
 
 // Implement virtual method

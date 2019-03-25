@@ -90,7 +90,7 @@ GetTransactionByHash = async function (params) {
     })
 }
 
-exports.GetNumberConstant = async function (params) {
+exports.getNumberConstant = async function (params) {
     for (let i = 0; i < params.length; i++) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
@@ -135,23 +135,25 @@ SubmitTransaction = async function (params, fn) {
     await GetTransactionByHash(res)
 }
 
-exports.SubmitDCBProposal = async function (params) {
+exports.submitDCBProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
 }
 
-exports.SubmitGOVProposal = async function (params) {
-    await SubmitProposal(params, shard.CreateAndSendSubmitGOVProposalTx)
+
+
+exports.submitGOVProposal = async function (params) {
+    await SubmitTransaction(params, shard.CreateAndSendSubmitGOVProposalTx)
 }
 
-exports.VoteDCBProposal = async function (params) {
+exports.voteDCBProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
 }
 
-exports.VoteGOVProposal = async function (params) {
+exports.voteGOVProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
 }
 
-exports.VoteDCBBoard = async function (params) {
+exports.voteDCBBoard = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
 }
 
@@ -159,14 +161,40 @@ exports.VoteGOVBoard = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
 }
 
-exports.GetListDCBBoard = async function (params) {
+exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
 }
 
-exports.GetListGOVBoard = async function (params) {
+exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
 }
+let currentDCBConstitutionIndex = 0;
+let currentGOVConstitutionIndex = 0;
+waitForNewConstitution = async function (params, fn) {
+    let waitForResult = async () => {
+        return new Promise((resolve) => {
+            var getResult = async () => {
+                flagResponse = await fn(params);
+                if ((flagResponse.Error == null) && (flagResponse.Response.Error == null) && ((flagResponse.Response.Result.ConstitutionInfo.ConstitutionIndex > currentConstitutionIndex))) {
+                    resolve(flagResponse.Response.Result.ConstitutionInfo.ConstitutionIndex)
+                } else {
+                    setTimeout(() => {
+                        console.log("Spamming until get transaction hash");
+                        getResult();
+                    }, 5000)
+                }
+            }
+            getResult()
+        })
+    }
+    return await waitForResult();
+}
 
-
+exports.waitForNewDCBConstitution = async function (params) {
+    currentDCBConstitutionIndex = await waitForNewConstitution(params,shard.GetDCBConstitution)
+}
+exports.waitForNewGOVConstitution = async function (params) {
+    currentGOVConstitutionIndex = await waitForNewConstitution(params,shard.GetGOVConstitution)
+}
