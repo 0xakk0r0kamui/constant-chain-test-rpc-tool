@@ -4,7 +4,7 @@ ListGOVBoardG = {}
 DCBTokenG = {}
 GOVTokenG = {}
 MoG = {}
-PrivateG = {}
+PrivateG = {"fff":3}
 PaymentG = {}
 
 //============================== Board
@@ -49,8 +49,11 @@ exports.setNewUser = async function(params) {
     let userName = params[0]
     let privateKey = params[1]
     let paymentAddress = params[2]
-    global[PrivateG][userName] = privateKey
-    global[PaymentG][userName] = paymentAddress
+    global['PrivateG'][userName] = privateKey
+    global['PaymentG'][userName] = paymentAddress
+    global['MoG'][userName] = 0
+    global['DCBTokenG'][userName] = 0
+    global['GOVTokenG'][userName] = 0
     return true
 }
 
@@ -61,7 +64,7 @@ exports.checkSingleValue = async function(params) {
 }
 
 function GetAllState() {
-    return [DCBListG , GOVListG , DCBTokenG , GOVTokenG , MoG , VoteProposalG , VoteBoardG , PrivateG , PaymentG]
+    return [ListDCBBoardG, ListGOVBoardG, DCBTokenG , GOVTokenG , MoG , PrivateG , PaymentG]
 }
 
 function SetAllState() {
@@ -78,6 +81,7 @@ exports.sendMoney = async function(params) {
     amount = params[2]
     MoG[sender]-=  amount
     MoG[receiver] += amount
+    return true
 }
 
 exports.sendDCBToken = async function(params) {
@@ -86,6 +90,7 @@ exports.sendDCBToken = async function(params) {
     amount = params[2]
     DCBTokenG[sender]-=  amount
     DCBTokenG[receiver] += amount
+    return true
 }
 
 exports.sendGOVToken = async function(params) {
@@ -94,6 +99,7 @@ exports.sendGOVToken = async function(params) {
     amount = params[2]
     GOVTokenG[sender]-=  amount
     GOVTokenG[receiver] += amount
+    return true
 }
 
 exports.saveCheckpoint = async function(params) {
@@ -111,15 +117,15 @@ exports.loadCheckpoint = async function(params) {
     return true
 }
 
-exports.getNumberOfConstant = async function(params) {
-    res = {}
+exports.getNumberConstant = async function(params) {
+    res = []
     for (let i = 0; i< params.length; i++) {
-        res[params[i]] = global[MoG][params[i]]
+        res.push(global.MoG[params[i]])
     }
     return res
 }
 
-exports.getNumberOfDCBToken = async function(params) {
+exports.getNumberDCBToken = async function(params) {
     res = {}
     for (let i = 0; i< params.length; i++) {
         res[params[i]] = global[DCBTokenG][params[i]]
@@ -127,7 +133,7 @@ exports.getNumberOfDCBToken = async function(params) {
     return res
 }
 
-exports.getNumberOfGOVToken = async function(params) {
+exports.getNumberGOVToken = async function(params) {
     res = {}
     for (let i = 0; i< params.length; i++) {
         res[params[i]] = global[GOVTokenG][params[i]]
@@ -139,26 +145,42 @@ exports.voteDCBBoard = async function(params) {
     let voter = params[0]
     let votee = params[1]
     let amount = params[2]
+    if (VoteDCBBoardAmountG[votee] === undefined) {
+        VoteDCBBoardAmountG[votee] = 0;
+        VoteDCBBoardTableG[votee] = {};
+    }
     VoteDCBBoardAmountG[votee] += amount
+    if (VoteDCBBoardTableG[votee][voter] === undefined) {
+        VoteDCBBoardTableG[votee][voter] = 0
+    }
     VoteDCBBoardTableG[votee][voter] += amount
     DCBTokenG[voter] -= amount
+    return true
 }
 
 exports.voteGOVBoard = async function(params) {
     let voter = params[0]
     let votee = params[1]
     let amount = params[2]
+    if (VoteGOVBoardAmountG[votee] === undefined) {
+        VoteGOVBoardAmountG[votee] = 0;
+        VoteGOVBoardTableG[votee] = {};
+    }
     VoteGOVBoardAmountG[votee] += amount
+    if (VoteGOVBoardTableG[votee][voter] === undefined) {
+        VoteGOVBoardTableG[votee][voter] = 0
+    }
     VoteGOVBoardTableG[votee][voter] += amount
     GOVTokenG[voter] -= amount
+    return true
 }
 
 exports.getListDCBBoard = async function(params) {
-    return DCBListG
+    return ListDCBBoardG
 }
 
 exports.getListDCBBoard = async function(params) {
-    return GOVListG
+    return ListGOVBoardG
 }
 
 exports.submitDCBProposal = async function(params){
@@ -166,6 +188,7 @@ exports.submitDCBProposal = async function(params){
     let proposalParams = params[1]
     let submitter =  params[2]
     ProposalSubmitter[proposalName] = submitter
+    return true
 }
 
 exports.submitGOVProposal = async function(params){
@@ -173,6 +196,7 @@ exports.submitGOVProposal = async function(params){
     let proposalParams = params[1]
     let submitter =  params[2]
     ProposalSubmitter[proposalName] = submitter
+    return true
 }
 
 exports.voteDCBProposal = async function(params) {
@@ -180,11 +204,15 @@ exports.voteDCBProposal = async function(params) {
     let proposalName = params[1]
 
     let oldproposal =  VoteDCBProposalTableG[voter]
-    if (oldproposal != null) {
+    if (oldproposal != undefined) {
         VoteDCBProposalAmountG[oldproposal] -= 1
+    }
+    if (VoteDCBProposalAmountG[proposalName] === undefined) {
+        VoteDCBProposalAmountG[proposalName] = 0
     }
     VoteDCBProposalAmountG[proposalName] += 1
     VoteDCBProposalTableG[voter] = proposalName
+    return true
 }
 
 exports.voteGOVProposal = async function(params) {
@@ -197,6 +225,7 @@ exports.voteGOVProposal = async function(params) {
     }
     VoteGOVProposalAmountG[proposalName] += 1
     VoteGOVProposalTableG[voter] = proposalName
+    return true
 }
 
 exports.waitForNewDCBBoard = async function(params) {
@@ -220,10 +249,11 @@ exports.waitForNewDCBBoard = async function(params) {
     SendBackTokenOldDCBBoard();
     // update new list board && Set value for old value
     OldListDCBBoardG = JSON.parse(JSON.stringify(ListDCBBoardG));
-    ListDCBBoardG = newBoard.map(newBoard.map(x => x[0]));
+    ListDCBBoardG = newBoard.map(x => x[0]);
     OldVoteDCBBoardTableG = JSON.parse(JSON.stringify(VoteDCBBoardTableG));
     VoteDCBBoardTableG = {}
     VoteDCBBoardAmountG = {}
+    return true
 }
 
 exports.waitForNewGOVBoard = async function(params) {
@@ -247,13 +277,16 @@ exports.waitForNewGOVBoard = async function(params) {
     SendBackTokenOldGOVBoard();
     // update new list board && Set value for old value
     OldListGOVBoardG = JSON.parse(JSON.stringify(ListGOVBoardG));
-    ListGOVBoardG = newBoard.map(newBoard.map(x => x[0]));
+    ListGOVBoardG = newBoard.map(x => x[0]);
     OldVoteGOVBoardTableG = JSON.parse(JSON.stringify(VoteGOVBoardTableG));
     VoteGOVBoardTableG = {}
     VoteGOVBoardAmountG = {}
+    return true
 }
 
 exports.waitForNewDCBConstitution = async function (params) {
+    console.log(VoteDCBProposalTableG)
+    console.log(VoteDCBProposalAmountG)
     let list = Object.keys(VoteDCBProposalAmountG).map(function (key) {
         return [key, VoteDCBProposalAmountG[key]]
     } );
@@ -261,12 +294,14 @@ exports.waitForNewDCBConstitution = async function (params) {
         return sc[1] - fs[1]
     });
     DCBConstitutionG = list[0][0]
+
     let reward = GetReward()
     SendRewardSubmitter(reward*0.3, DCBConstitutionG)
     SendRewardDCBProposalVoterAndSupporter(reward*0.7, DCBConstitutionG)
     //reset table and amount vote
     VoteDCBProposalAmountG = {}
     VoteDCBProposalTableG = {}
+    return true
 };
 
 exports.waitForNewGOVConstitution = async function (params) {
@@ -283,16 +318,26 @@ exports.waitForNewGOVConstitution = async function (params) {
     //reset table and amount vote
     VoteGOVProposalAmountG = {}
     VoteGOVProposalTableG = {}
+    return true
 };
+
+exports.getDCBConstitution = async function(params) {
+    return DCBConstitutionG
+}
+
+exports.getGOVConstitution = async function(params) {
+    return GOVConstitutionG
+}
 
 function SendRewardSubmitter(reward, constitution) {
     let submitter = ProposalSubmitter[constitution];
     MoG[submitter] += reward
+    return true
 }
 
 function SendRewardDCBProposalVoterAndSupporter(reward, constitution) {
     let list = Object.keys(VoteDCBProposalTableG).map(
-        x => (x, VoteDCBProposalTableG[x])
+        x => [x, VoteDCBProposalTableG[x]]
     );
     let voteForConstitution = list.filter(
         x => x[1] == constitution
@@ -311,6 +356,7 @@ function SendRewardDCBProposalVoterAndSupporter(reward, constitution) {
             MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote
         }
     }
+    return true
 }
 
 function SendRewardGOVProposalVoterAndSupporter(reward, constitution) {
@@ -334,6 +380,7 @@ function SendRewardGOVProposalVoterAndSupporter(reward, constitution) {
             MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote
         }
     }
+    return true
 }
 
 function GetReward() {

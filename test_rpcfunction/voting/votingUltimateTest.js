@@ -96,10 +96,11 @@ describe('Test voting Board', async function () {
                  let sttm = text[a].split(' ')
                  console.log(sttm)
                  let res =  await blockchainFunc[sttm[0]](sttm.slice(1))
+                 // let res = true
                  let res2 =  await groundTruthFunc[sttm[0]](sttm.slice(1))
 
                  console.log(res + " zzz " + res2)
-                 assert.ok(res == res2)
+                 assert.ok(res === res2)
             });
         })(i);
     }

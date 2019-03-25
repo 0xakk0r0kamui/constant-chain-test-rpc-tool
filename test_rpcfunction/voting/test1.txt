@@ -1,5 +1,5 @@
 setNewUser huu private1 payment1
-
+setNewUser hy private1 payment1
 sendMoney huu hy 300
 sendDCBToken huu hy 95
 getNumberConstant huu
@@ -10,6 +10,7 @@ waitForNewDCBBoard
 getListDCBBoard
 checkAllValue
 submitDCBProposal proposalname proposalparams huu
-waitForNewConstitution
+voteDCBProposal hy proposalname
+waitForNewDCBConstitution
 getDCBConstitution
 checkAllValue
