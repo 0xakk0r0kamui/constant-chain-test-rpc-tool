@@ -1,34 +1,34 @@
 // =========================money and Token
-ListDCBBoardG = {}
-ListGOVBoardG = {}
-DCBTokenG = {}
-GOVTokenG = {}
-MoG = {}
-PrivateG = {}
-PaymentG = {}
+ListDCBBoardB = {}
+ListGOVBoardB = {}
+DCBTokenB = {}
+GOVTokenB = {}
+MoB = {}
+PrivateB = {}
+PaymentB = {}
 
 //============================== Board
 //[votee] = amount
-VoteDCBBoardAmountG = {}
+VoteDCBBoardAmountB = {}
 //[votee][voter] = amount
-VoteDCBBoardTableG = {}
-VoteGOVBoardAmountG = {}
-VoteGOVBoardTableG = {}
-OldVoteDCBBoardTableG = {}
-OldVoteGOVBoardTableG = {}
-OldListDCBBoardG = {}
-OldListGOVBoardG = {}
+VoteDCBBoardTableB = {}
+VoteGOVBoardAmountB = {}
+VoteGOVBoardTableB = {}
+OldVoteDCBBoardTableB = {}
+OldVoteGOVBoardTableB = {}
+OldListDCBBoardB = {}
+OldListGOVBoardB = {}
 
 //==========================Proposal
 //[proposalId] = amount
-VoteDCBProposalAmountG = {}
+VoteDCBProposalAmountB = {}
 //[voter] = proposalId
-VoteDCBProposalTableG = {}
-VoteGOVProposalAmountG = {}
-VoteGOVProposalTableG = {}
-DCBConstitutionG = {}
-GOVConstitutionG = {}
-ProposalTxIDG = {}
+VoteDCBProposalTableB = {}
+VoteGOVProposalAmountB = {}
+VoteGOVProposalTableB = {}
+DCBConstitutionB = {}
+GOVConstitutionB = {}
+ProposalTxIDB = {}
 ProposalSubmitter = {}
 
 var ncp = require('ncp').ncp;
