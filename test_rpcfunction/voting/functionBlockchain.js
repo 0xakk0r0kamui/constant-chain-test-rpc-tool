@@ -156,7 +156,8 @@ SubmitTransaction = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
-                flagResponse = await fn.call(shard, params);
+                console.log(params)
+                flagResponse = await fn.call(shard, ...params);
                 if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
@@ -240,6 +241,7 @@ exports.waitForNewGOVConstitution = async function (params) {
 
 exports.sendMoney = async function (params) {
     let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),-1,-1]
+    console.log(newParams)
     await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
 }
 
