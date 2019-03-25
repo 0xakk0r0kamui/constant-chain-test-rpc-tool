@@ -1,14 +1,35 @@
+// =========================money and Token
 ListDCBBoardG = {}
 ListGOVBoardG = {}
-DCBTokenB = {}
-GOVTokenB = {}
-MoB = {}
-VoteProposalB = {}
-VoteBoardB = {}
-PrivateB = {}
-PaymentB = {}
-ConstitutionB = {}
-ProposalTxIDB = {}
+DCBTokenG = {}
+GOVTokenG = {}
+MoG = {}
+PrivateG = {}
+PaymentG = {}
+
+//============================== Board
+//[votee] = amount
+VoteDCBBoardAmountG = {}
+//[votee][voter] = amount
+VoteDCBBoardTableG = {}
+VoteGOVBoardAmountG = {}
+VoteGOVBoardTableG = {}
+OldVoteDCBBoardTableG = {}
+OldVoteGOVBoardTableG = {}
+OldListDCBBoardG = {}
+OldListGOVBoardG = {}
+
+//==========================Proposal
+//[proposalId] = amount
+VoteDCBProposalAmountG = {}
+//[voter] = proposalId
+VoteDCBProposalTableG = {}
+VoteGOVProposalAmountG = {}
+VoteGOVProposalTableG = {}
+DCBConstitutionG = {}
+GOVConstitutionG = {}
+ProposalTxIDG = {}
+ProposalSubmitter = {}
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -139,8 +160,6 @@ exports.submitDCBProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
 }
 
-
-
 exports.submitGOVProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendSubmitGOVProposalTx)
 }
@@ -164,6 +183,7 @@ exports.VoteGOVBoard = async function (params) {
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
+    return res
 }
 
 exports.getListGOVBoard = async function (params) {
@@ -195,6 +215,7 @@ waitForNewConstitution = async function (params, fn) {
 exports.waitForNewDCBConstitution = async function (params) {
     currentDCBConstitutionIndex = await waitForNewConstitution(params,shard.GetDCBConstitution)
 }
+
 exports.waitForNewGOVConstitution = async function (params) {
     currentGOVConstitutionIndex = await waitForNewConstitution(params,shard.GetGOVConstitution)
 }

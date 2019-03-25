@@ -1,2 +1,15 @@
-test sdf
+setNewUser huu
 
+sendMoney huu hy 300
+sendDCBToken huu hy 95
+getNumberConstant huu
+voteDCBBoard hy huu 20
+voteDCBBoard hy huu1 20
+voteDCBBoard hy huu2 20
+waitForNewDCBBoard
+getListDCBBoard
+checkAllValue
+submitDCBProposal proposalname proposalparams huu
+waitForNewConstitution
+getDCBConstitution
+checkAllValue

@@ -4,10 +4,6 @@ const rimraf = require('rimraf')
 
 // todo subtract tx fee for each tx in ground truth @____@
 /*
-    setVarValue {
-        input: typename varname value
-        output: true/false
-    }
     checkSingleValue{
         input: typename varname
         output: value
@@ -42,12 +38,12 @@ const rimraf = require('rimraf')
     }
     getNumberConstant{
         input: user1 user2...
-        output: res{user1: amount, user2: amount}
+        output: res[]= [amountofuser1, amountofuser2,...]
         SIDEEFFECT: set MoB[user]
     }
     getNumberDCB/GOVToken{
         input: user1 user2...
-        output: true/false
+        output: res[]= [amountofuser1, amountofuser2,...]
         SIDEEFFECT: set DCBBoardB/GOVBoardB[user]
     }
     voteDCB/GOVBoard {
@@ -56,14 +52,8 @@ const rimraf = require('rimraf')
         SIDEEFFECT: VoteBoard[votee], DCBTokenB/GOVTokenB/DCBTokenG/GOVTokenG[voter]
     }
     getListDCB/GOVBoard{
-        input: res
-        output: true/false
+        output: [payment1, payment2,...] //sort
         SIDEEFFECT: set DCB/GOVBoardB
-    }
-    getBlockCount{ // Doesn't need this function!!! Use waitFor... is safer
-        input:
-        output: true/false
-        SIDEEFFECT: set BlockHeightB
     }
     submitDCB/GOVProposal {
         input: proposalname proposalparams submitter
@@ -77,6 +67,9 @@ const rimraf = require('rimraf')
     }
     waitForNewDCB/GOVBoard{
         SIDEEFFECT: set DCB/GOVTokenG[alluser], ListDCB/GOVBoardB/G
+    }
+    getDCB/GOVConstitution{
+        output: params
     }
 */
 
