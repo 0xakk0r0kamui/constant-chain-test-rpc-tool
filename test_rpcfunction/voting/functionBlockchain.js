@@ -124,7 +124,7 @@ exports.getNumberConstant = async function (params) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
-                    flagResponse = await shard.GetBalanceByPrivatekey(cs.VOTERS_SK[i]);
+                    flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
                     if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
@@ -165,6 +165,7 @@ SubmitTransaction = async function (params, fn) {
 }
 
 exports.submitDCBProposal = async function (params) {
+    
     await SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
 }
 
@@ -227,3 +228,35 @@ exports.waitForNewDCBConstitution = async function (params) {
 exports.waitForNewGOVConstitution = async function (params) {
     currentGOVConstitutionIndex = await waitForNewConstitution(params,shard.GetGOVConstitution)
 }
+
+exports.sendMoney = async function (params) {
+    let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),-1,-1]
+    await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
+}
+
+exports.sendDCBToken = async function (params) {
+    let txInfo = {
+        "TokenID": cs.ID_DCB,
+        "TokenName": "ABC",
+        "TokenSymbol": "ABC",
+        "TokenTxType": 1,
+        "TokenAmount": 0,
+        "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),
+    }
+    let newParams = [PrivateB[params[0]], null, -1, -1, txInfo]
+    await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction)
+}
+
+exports.sendGOVToken = async function (params) {
+    let txInfo = {
+        "TokenID": cs.ID_GOV,
+        "TokenName": "ABC",
+        "TokenSymbol": "ABC",
+        "TokenTxType": 1,
+        "TokenAmount": 0,
+        "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),
+    }
+    let newParams = [PrivateB[params[0]], null, -1, -1, txInfo]
+    await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction)
+}
+
