@@ -2,6 +2,7 @@ let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
 const rimraf = require('rimraf')
 
+// todo subtract tx fee for each tx in ground truth @____@
 /*
     setVarValue {
         input: typename varname value
@@ -65,17 +66,17 @@ const rimraf = require('rimraf')
         SIDEEFFECT: set BlockHeightB
     }
     submitDCB/GOVProposal {
-        input: proposalname proposalparams
+        input: proposalname proposalparams submitter
     }
     voteDCB/GOVProposal {
-        input: user proposalname
-        SIDEEFFECT: VoteProposal[proposal]
+        input: voter proposalname
+        SIDEEFFECT: VoteProposal[proposal],
     }
-    waitForNewConstitution{
-        SIDEEFFECT: set DCB/GOVG[alluser], BlockHeight, Constitution
+    waitForNewDCB/GOVConstitution{
+        SIDEEFFECT: set DCB/GOVTokenG[alluser], DCB/GOVConstitutionB/G
     }
-    waitForNewBoard{
-        SIDEEFFECT: set DCB/GOVG[alluser], BlockHeight, ListDCB/GOVBoardB/G
+    waitForNewDCB/GOVBoard{
+        SIDEEFFECT: set DCB/GOVTokenG[alluser], ListDCB/GOVBoardB/G
     }
 */
 

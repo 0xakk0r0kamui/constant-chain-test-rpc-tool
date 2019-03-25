@@ -1,6 +1,5 @@
-BBB = {}
-DCBListB = {}
-GOVListB = {}
+ListDCBBoardG = {}
+ListGOVBoardG = {}
 DCBTokenB = {}
 GOVTokenB = {}
 MoB = {}
@@ -35,19 +34,9 @@ exports.checkAllValue = async function(params) {
     return [DCBListB , GOVListB , DCBTokenB, GOVTokenB, MoB , VoteProposalB , VoteBoardB , PrivateB , PaymentB]
 }
 
-exports.compare = async function (params) {
-    varName = params[0]
-    value = params[1]
-    if (WWW[varName] == value) {
-        return true
-    }
-    console.log("wrong value! Expect " + varName + "=" + value + " actual=" + WWW[varName])
-    return false
-}
-
 exports.saveCheckpoint = async function (params) {
     dataDir = sourceDir + 'data'
-    checkpointDir = sourceDir + params[0]
+    checkpointDir = sourceDir + 'checkpoint/'+ params[0]
     err = rimraf.sync(checkpointDir);
     x = await new Promise(function (resolve, reject) {
         ncp(dataDir, checkpointDir, function (err) {
@@ -66,7 +55,7 @@ exports.saveCheckpoint = async function (params) {
 
 exports.loadCheckpoint = async function (params) {
     dataDir = sourceDir + 'data'
-    checkpointDir = sourceDir + params[0]
+    checkpointDir = sourceDir + 'checkpoint/' + params[0]
     rimraf.sync(dataDir);
     console.log(dataDir)
     f = await new Promise(function (resolve, reject) {
@@ -84,7 +73,7 @@ exports.loadCheckpoint = async function (params) {
     return f
 }
 
-exports.GetTransactionByHash = async function (params) {
+GetTransactionByHash = async function (params) {
     return new Promise((resolve) => {
         var getResult = async () => {
             flagResponse = await shard.GetTransactionByHash(params);
@@ -125,7 +114,7 @@ exports.GetNumberConstant = async function (params) {
     }
 }
 
-exports.SubmitTransaction = async function (params, fn) {
+SubmitTransaction = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
@@ -143,37 +132,31 @@ exports.SubmitTransaction = async function (params, fn) {
         })
     }
     let res = await waitForResult();
-    await exports.GetTransactionByHash(res)
+    await GetTransactionByHash(res)
 }
 
 exports.SubmitDCBProposal = async function (params) {
-    await exports.SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
+    await SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
 }
 
-
-
 exports.SubmitGOVProposal = async function (params) {
-    await exports.SubmitProposal(params, shard.CreateAndSendSubmitGOVProposalTx)
+    await SubmitProposal(params, shard.CreateAndSendSubmitGOVProposalTx)
 }
 
 exports.VoteDCBProposal = async function (params) {
-    await exports.SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+    await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
 }
 
 exports.VoteGOVProposal = async function (params) {
-    await exports.SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+    await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
 }
 
 exports.VoteDCBBoard = async function (params) {
-    await exports.SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
+    await SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
 }
 
 exports.VoteGOVBoard = async function (params) {
-    await exports.SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
-}
-
-exports.GetListDCBBoard = async function (params) {
-    await exports.SubmitTransaction(params, shard.GetListDCBBoard)
+    await SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
 }
 
 exports.GetListDCBBoard = async function (params) {
@@ -185,3 +168,5 @@ exports.GetListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
 }
+
+
