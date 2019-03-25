@@ -112,9 +112,10 @@ exports.loadCheckpoint = async function (params) {
 }
 
 GetTransactionByHash = async function (params) {
+    console.log(params.TxID)
     return new Promise((resolve) => {
         var getResult = async () => {
-            flagResponse = await shard.GetTransactionByHash(params);
+            flagResponse = await shard.GetTransactionByHash(params.TxID);
             if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                 resolve(flagResponse.Response.Result)
             } else {
@@ -134,7 +135,7 @@ exports.getNumberConstant = async function (params) {
             return new Promise((resolve) => {
                 var getResult = async () => {
                     flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
-                    if ((flagResponse ==null )&&(flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                    if ((flagResponse ==null) && (flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
                         setTimeout(() => {
