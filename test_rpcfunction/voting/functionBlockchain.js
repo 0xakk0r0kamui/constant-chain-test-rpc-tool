@@ -42,8 +42,17 @@ let cs = require('./votingBoard-profile');
 let helper = require('./helper');
 mode = "SHARD"
 
-
-exports.test = async function (params) {}
+exports.setNewUser = async function(params) {
+    let userName = params[0]
+    let privateKey = params[1]
+    let paymentAddress = params[2]
+    global['PrivateB'][userName] = privateKey
+    global['PaymentB'][userName] = paymentAddress
+    global['MoB'][userName] = 0
+    global['DCBTokenB'][userName] = 0
+    global['GOVTokenB'][userName] = 0
+    return true
+}
 
 exports.setVarValue = async function (params) {
     varType = params[0] + 'B'
@@ -125,7 +134,7 @@ exports.getNumberConstant = async function (params) {
             return new Promise((resolve) => {
                 var getResult = async () => {
                     flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
-                    if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                    if ((flagResponse ==null )&&(flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
                         setTimeout(() => {

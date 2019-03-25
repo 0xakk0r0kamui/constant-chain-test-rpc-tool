@@ -21,6 +21,7 @@ describe('Test voting Board', async function () {
     //     console.log(flagResponse)
     // });
     it('Get number of Constant', async function () {
+        console.log('wtf')
         this.timeout(Number.MAX_SAFE_INTEGER);
         for (let i = 0; i < numberOfVoter; i++) {
             let waitForResult = async () => {
@@ -45,6 +46,7 @@ describe('Test voting Board', async function () {
         }
     });
     it('Get number of Customtoken', async function () {
+        console.log('wtf')
         this.timeout(Number.MAX_SAFE_INTEGER);
         for (let i = 0; i < numberOfVoter; i++) {
             let waitForResult = async () => {
@@ -75,6 +77,7 @@ describe('Test voting Board', async function () {
         }
     });
     it('Voting Board and return vote transaction', async function () {
+        console.log('wtf')
         this.timeout(Number.MAX_SAFE_INTEGER);
         for (let j = 0; j < numberOfVoter; j++) {
             let voteAmount = 5;
@@ -114,6 +117,7 @@ describe('Test voting Board', async function () {
         assert.ok(true)
     });
     it('Get number of Constant after voting', async function () {
+        console.log('wtf')
         this.timeout(Number.MAX_SAFE_INTEGER);
         let resbool = true;
         for (let i = 0; i < numberOfVoter; i++) {
@@ -141,6 +145,7 @@ describe('Test voting Board', async function () {
         assert.ok(resbool, "Why my value dont change dude?")
     });
     it('Get number of Customtoken after voting', async function () {
+        console.log('wtf')
         this.timeout(Number.MAX_SAFE_INTEGER);
         for (let i = 0; i < numberOfVoter; i++) {
             let waitForResult = async () => {
