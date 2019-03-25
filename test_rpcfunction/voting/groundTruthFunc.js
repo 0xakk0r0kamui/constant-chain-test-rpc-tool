@@ -1,31 +1,36 @@
+// =========================money and Token
 ListDCBBoardG = {}
 ListGOVBoardG = {}
 DCBTokenG = {}
 GOVTokenG = {}
 MoG = {}
-//[proposalId] = amount
-VoteDCBProposalAmountG = {}
-//[voter] = proposalId
-VoteDCBProposalTableG = {}
+PrivateG = {}
+PaymentG = {}
+
+//============================== Board
 //[votee] = amount
 VoteDCBBoardAmountG = {}
 //[votee][voter] = amount
 VoteDCBBoardTableG = {}
-VoteGOVProposalAmountG = {}
-VoteGOVProposalTableG = {}
 VoteGOVBoardAmountG = {}
 VoteGOVBoardTableG = {}
-PrivateG = {}
-PaymentG = {}
+OldVoteDCBBoardTableG = {}
+OldVoteGOVBoardTableG = {}
+OldListDCBBoardG = {}
+OldListGOVBoardG = {}
+
+//==========================Proposal
+//[proposalId] = amount
+VoteDCBProposalAmountG = {}
+//[voter] = proposalId
+VoteDCBProposalTableG = {}
+VoteGOVProposalAmountG = {}
+VoteGOVProposalTableG = {}
 DCBConstitutionG = {}
 GOVConstitutionG = {}
 ProposalTxIDG = {}
 ProposalSubmitter = {}
 
-OldVoteDCBBoardTableG = {}
-OldVoteGOVBoardTableG = {}
-OldListDCBBoardG = {}
-OldListGOVBoardG = {}
 
 exports.test = async function(params) {
     console.log(global)
@@ -260,10 +265,28 @@ exports.waitForNewDCBConstitution = async function (params) {
     SendRewardSubmitter(reward*0.3, DCBConstitutionG)
     SendRewardDCBProposalVoterAndSupporter(reward*0.7, DCBConstitutionG)
     //reset table and amount vote
-}
+    VoteDCBProposalAmountG = {}
+    VoteDCBProposalTableG = {}
+};
+
+exports.waitForNewGOVConstitution = async function (params) {
+    let list = Object.keys(VoteGOVProposalAmountG).map(function (key) {
+        return [key, VoteGOVProposalAmountG[key]]
+    } );
+    list.sort(function(fs, sc) {
+        return sc[1] - fs[1]
+    });
+    GOVConstitutionG = list[0][0]
+    let reward = GetReward()
+    SendRewardSubmitter(reward*0.3, GOVConstitutionG)
+    SendRewardGOVProposalVoterAndSupporter(reward*0.7, GOVConstitutionG)
+    //reset table and amount vote
+    VoteGOVProposalAmountG = {}
+    VoteGOVProposalTableG = {}
+};
 
 function SendRewardSubmitter(reward, constitution) {
-    let submitter = ProposalSubmitter[constitution]
+    let submitter = ProposalSubmitter[constitution];
     MoG[submitter] += reward
 }
 
@@ -278,12 +301,37 @@ function SendRewardDCBProposalVoterAndSupporter(reward, constitution) {
     );
     rewardForEach = reward / voteForConstitution.length;
     for (let candidate in voteForConstitution) {
+        Mob[candidate] += reward*0.3
+        let rewardForSupporter = reward*0.7
         let list = OldVoteDCBBoardTableG[candidate];
         let listSupporter = Object.keys(list).map(x => [x,list[x]]);
         let SumAmountVote = OldVoteDCBBoardAmountG;
         for (let i = 0; i < listSupporter.length; i++) {
             let supporter = listSupporter[i]
-            MoG[supporter[0]] += reward*supporter[1]/SumAmountVote
+            MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote
+        }
+    }
+}
+
+function SendRewardGOVProposalVoterAndSupporter(reward, constitution) {
+    let list = Object.keys(VoteGOVProposalTableG).map(
+        x => (x, VoteGOVProposalTableG[x])
+    );
+    let voteForConstitution = list.filter(
+        x => x[1] == constitution
+    ).map(
+        x => x[0]
+    );
+    rewardForEach = reward / voteForConstitution.length;
+    for (let candidate in voteForConstitution) {
+        Mob[candidate] += reward*0.3
+        let rewardForSupporter = reward*0.7
+        let list = OldVoteGOVBoardTableG[candidate];
+        let listSupporter = Object.keys(list).map(x => [x,list[x]]);
+        let SumAmountVote = OldVoteGOVBoardAmountG;
+        for (let i = 0; i < listSupporter.length; i++) {
+            let supporter = listSupporter[i]
+            MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote
         }
     }
 }
