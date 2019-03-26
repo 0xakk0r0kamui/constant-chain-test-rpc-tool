@@ -1,3 +1,5 @@
+var t = require('lodash')
+var tt = require('lodash/core');
 let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
 const rimraf = require('rimraf')
@@ -92,15 +94,18 @@ describe('Test voting Board', async function () {
     let text
     text = fs.readFileSync("test1.txt",'utf8');
     text = text.split("\n");
-    let i
+    let i;
     for (i = 0; i< text.length-2; i++) {
-        let sttm = text[i].split(' ')
-        console.log(sttm)
-        let res = await blockchainFunc[sttm[0]](sttm.slice(1))
+        let sttm = text[i].split(' ');
+        console.log(sttm);
+        let res = await blockchainFunc[sttm[0]](sttm.slice(1));
         // let res = true
-        let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1))
+        let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1));
+        console.log(typeof(res),' ', typeof(res));
 
-        console.log(res + " zzz " + res2)
-        assert.ok(res === res2)
+        console.log(res + " zzz " + res2);
+        assert.deepEqual(res, res2)
+
+
     }
 });
