@@ -155,7 +155,6 @@ class ConstantNodeRPC {
 function rpc(method, client, params) {
   return new Promise((resolve,reject) => {
     client.request(method, params, function (err, response) {
-      console.log(method)
       if (err != null) {
           resolve(err)
       }

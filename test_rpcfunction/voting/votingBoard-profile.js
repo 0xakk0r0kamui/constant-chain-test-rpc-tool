@@ -32,6 +32,7 @@ let VOTERS_SK = [
 module.exports = {
     DCBVotingFlag,
     ID_DCB,
+    ID_GOV,
     SELF_SK,
     SELF_PAYMENT,
     BURN_ADDR,
