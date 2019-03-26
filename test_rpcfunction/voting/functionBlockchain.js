@@ -130,12 +130,13 @@ GetTransactionByHash = async function (params) {
 }
 
 exports.getNumberConstant = async function (params) {
+    console.log("Aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     for (let i = 0; i < params.length; i++) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
                     flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
-                    if ((flagResponse ==null) && (flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                    if ((flagResponse !=null) && (flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
                         setTimeout(() => {
@@ -154,6 +155,7 @@ exports.getNumberConstant = async function (params) {
 }
 
 SubmitTransaction = async function (params, fn) {
+    console.log(params)
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
@@ -245,6 +247,7 @@ exports.sendMoney = async function (params) {
 }
 
 exports.sendDCBToken = async function (params) {
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaa")
     let txInfo = {
         "TokenID": cs.ID_DCB,
         "TokenName": "ABC",
