@@ -126,7 +126,7 @@ GetTransactionByHash = async function (params) {
     return new Promise((resolve) => {
         var getResult = async () => {
             flagResponse = await shard.GetTransactionByHash(newParams);
-            if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+            if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                 resolve(flagResponse.Response.Result)
             } else {
                 setTimeout(() => {
@@ -145,7 +145,7 @@ exports.getNumberConstant = async function (params) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
-                    flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
+                    flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[i]]);
                     if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
@@ -158,8 +158,8 @@ exports.getNumberConstant = async function (params) {
             })
         };
         let res = await waitForResult();
-        MoB[params[i]] = res
-        console.log("Account ", i, ": ", res);
+        MoB[params[i]] = res;
+        console.log("Account ", params[i], ": ", res);
         assert.ok(res >= 0, "Balance cannot less than zero");
         rr.push(res)
     }
