@@ -22,7 +22,6 @@ sendMoney master khoa 200
 sendMoney master tbao 200
 sendMoney master dbao 200
 sendMoney master hbao 200
-saveCheckpoint
 checkAllValue
 sendDCBToken master huu 100
 sendDCBToken master duy 100
