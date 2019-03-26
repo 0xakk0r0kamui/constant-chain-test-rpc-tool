@@ -161,6 +161,7 @@ exports.getNumberConstant = async function (params) {
 }
 
 SubmitTransaction = async function (params, fn) {
+    console.log(params)
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
@@ -262,6 +263,7 @@ exports.sendMoney = async function (params) {
 }
 
 exports.sendDCBToken = async function (params) {
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaa")
     let txInfo = {
         "TokenID": cs.ID_DCB,
         "TokenName": "ABC",
