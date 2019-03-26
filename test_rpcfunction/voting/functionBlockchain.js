@@ -40,7 +40,17 @@ let shard = new rpcfunc("127.0.0.1", 9334);
 let assert = require('assert');
 let cs = require('./votingBoard-profile');
 let helper = require('./helper');
+let rimraf = require('rimraf')
 mode = "SHARD"
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+exports.waitSeconds = async function(params) {
+    await sleep(parseInt(params[0])*500)
+    return true
+}
 
 exports.setNewUser = async function(params) {
     let userName = params[0]
@@ -54,22 +64,17 @@ exports.setNewUser = async function(params) {
     return true
 }
 
-exports.setVarValue = async function (params) {
-    varType = params[0] + 'B'
-    varName = params[1]
-    value = params[2]
-    global[varName][varName] = value
-    return true
-}
-
-exports.checkSingleValue = async function (params) {
-    varType = params[0] + 'B'
-    varName = params[1]
-    return global[varType][varName]
-}
-
 exports.checkAllValue = async function(params) {
-    return [DCBListB , GOVListB , DCBTokenB, GOVTokenB, MoB , VoteProposalB , VoteBoardB , PrivateB , PaymentB]
+    return MoG
+    // return [
+    //     ListDCBBoardB,
+    //     ListGOVBoardB,
+    //     DCBTokenB,
+    //     GOVTokenB,
+    //     MoB,
+    //     PrivateB,
+    //     PaymentB
+    // ]
 }
 
 exports.saveCheckpoint = async function (params) {

@@ -20,7 +20,7 @@ const rimraf = require('rimraf')
         input: username privateKey paymentAddress
         SIDEEFFECT: change PrivateB/G[username]  PaymentB/G[username]
     }
-    sendMoney {
+    sendMoney m
         input: sender receiver
         SIDEEFFECT: change MoG[user]/ MoB[user]
     }
