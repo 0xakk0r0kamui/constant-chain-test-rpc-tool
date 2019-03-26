@@ -117,10 +117,15 @@ exports.loadCheckpoint = async function (params) {
 }
 
 GetTransactionByHash = async function (params) {
-    console.log(params.TxID)
+    let newParams = null;
+    if (params.TxID) {
+        newParams = params.TxID;
+    } else {
+        newParams = params
+    }
     return new Promise((resolve) => {
         var getResult = async () => {
-            flagResponse = await shard.GetTransactionByHash(params.TxID);
+            flagResponse = await shard.GetTransactionByHash(newParams);
             if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                 resolve(flagResponse.Response.Result)
             } else {
@@ -161,7 +166,6 @@ exports.getNumberConstant = async function (params) {
 }
 
 SubmitTransaction = async function (params, fn) {
-    console.log(params)
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
@@ -203,12 +207,34 @@ exports.voteGOVProposal = async function (params) {
 }
 
 exports.voteDCBBoard = async function (params) {
-    await SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
+    let voteInfo = {
+        "TokenAmount": 0,
+        "TokenID": cs.ID_DCB,
+        "TokenName": "",
+        "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, Number(params[2]))))),
+        "TokenSymbol": "",
+        "TokenTxType": 1,
+        "PaymentAddress": PaymentB[params[1]],
+        "BoardIndex": 1
+    }
+    let newParams = [PrivateB[params[0]], null, -1, -1, voteInfo ]
+    await SubmitTransaction(newParams, shard.CreateAndSendVoteDCBBoardTransaction)
     return true
 }
 
-exports.VoteGOVBoard = async function (params) {
-    await SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
+exports.voteGOVBoard = async function (params) {
+    let voteInfo = {
+        "TokenAmount": 0,
+        "TokenID": cs.ID_GOV,
+        "TokenName": "",
+        "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, Number(params[2]))))),
+        "TokenSymbol": "",
+        "TokenTxType": 1,
+        "PaymentAddress": PaymentB[params[1]],
+        "BoardIndex": 1
+    }
+    let newParams = [PrivateB[params[0]], null, -1, -1, voteInfo ]
+    await SubmitTransaction(newParams, shard.CreateAndSendVoteGOVBoardTransaction)
     return true
 }
 
@@ -257,13 +283,11 @@ exports.waitForNewGOVConstitution = async function (params) {
 
 exports.sendMoney = async function (params) {
     let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),-1,-1]
-    console.log(newParams)
     await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
     return true
 }
 
 exports.sendDCBToken = async function (params) {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaa")
     let txInfo = {
         "TokenID": cs.ID_DCB,
         "TokenName": "ABC",
