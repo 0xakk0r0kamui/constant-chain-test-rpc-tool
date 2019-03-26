@@ -65,16 +65,16 @@ exports.setNewUser = async function(params) {
 };
 
 exports.checkAllValue = async function(params) {
-    return MoG
-    // return [
-    //     ListDCBBoardB,
-    //     ListGOVBoardB,
-    //     DCBTokenB,
-    //     GOVTokenB,
-    //     MoB,
-    //     PrivateB,
-    //     PaymentB
-    // ]
+    MoB['master'] = 0;
+    return {
+        'ListDCBBoard': ListDCBBoardB,
+        'ListGOVBoard': ListGOVBoardB,
+        'DCBToken': DCBTokenB,
+        'GOVToken': GOVTokenB,
+        'Mo': MoB,
+        'Private': PrivateB,
+        'Payment': PaymentB
+    }
 }
 
 exports.saveCheckpoint = async function (params) {
@@ -153,8 +153,8 @@ exports.getNumberConstant = async function (params) {
             })
         };
         let res = await waitForResult();
+        MoB[params[i]] = res
         console.log("Account ", i, ": ", res);
-        console.log(typeof(res))
         assert.ok(res >= 0, "Balance cannot less than zero");
         rr.push(res)
     }
@@ -216,12 +216,14 @@ exports.VoteGOVBoard = async function (params) {
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
+    ListDCBBoardB = res
     return res.Response.Result
 };
 
 exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
+    ListGOVBoardB = res
     return res.Response.Result
 };
 let currentDCBConstitutionIndex = 0;

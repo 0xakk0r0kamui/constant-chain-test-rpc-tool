@@ -101,11 +101,8 @@ describe('Test voting Board', async function () {
         let res = await blockchainFunc[sttm[0]](sttm.slice(1));
         // let res = true
         let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1));
-        console.log(typeof(res),' ', typeof(res));
 
         console.log(res + " zzz " + res2);
-        assert.deepEqual(res, res2)
-
-
+        assert.deepStrictEqual(res2, res)
     }
 });
