@@ -130,7 +130,7 @@ GetTransactionByHash = async function (params) {
 }
 
 exports.getNumberConstant = async function (params) {
-    console.log("Aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    let rr = []
     for (let i = 0; i < params.length; i++) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
@@ -150,8 +150,9 @@ exports.getNumberConstant = async function (params) {
         let res = await waitForResult();
         console.log("Account ", i, ": ", res);
         assert.ok(res > 0, "Balance cannot less than zero");
-        numberOfConstant[i] = res;
+        rr.push(res)
     }
+    return  rr
 }
 
 SubmitTransaction = async function (params, fn) {
@@ -159,6 +160,7 @@ SubmitTransaction = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
+
                 flagResponse = await fn.call(shard, ...params);
                 if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
                     resolve(flagResponse.Response.Result)
@@ -177,39 +179,45 @@ SubmitTransaction = async function (params, fn) {
 }
 
 exports.submitDCBProposal = async function (params) {
-    
     await SubmitTransaction(params, shard.CreateAndSendSubmitDCBProposalTx)
+    return true
 }
 
 exports.submitGOVProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendSubmitGOVProposalTx)
+    return true
 }
 
 exports.voteDCBProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+    return true
 }
 
 exports.voteGOVProposal = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteProposal)
+    return true
 }
 
 exports.voteDCBBoard = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteDCBBoardTransaction)
+    return true
 }
 
 exports.VoteGOVBoard = async function (params) {
     await SubmitTransaction(params, shard.CreateAndSendVoteGOVBoardTransaction)
+    return true
 }
 
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
-    return res
+    return res.Response.Result
 }
 
 exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
+    return res.Response.Result
 }
 let currentDCBConstitutionIndex = 0;
 let currentGOVConstitutionIndex = 0;
@@ -235,15 +243,19 @@ waitForNewConstitution = async function (params, fn) {
 
 exports.waitForNewDCBConstitution = async function (params) {
     currentDCBConstitutionIndex = await waitForNewConstitution(params,shard.GetDCBConstitution)
+    return true
 }
 
 exports.waitForNewGOVConstitution = async function (params) {
     currentGOVConstitutionIndex = await waitForNewConstitution(params,shard.GetGOVConstitution)
+    return true
 }
 
 exports.sendMoney = async function (params) {
     let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),-1,-1]
+    console.log(newParams)
     await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
+    return true
 }
 
 exports.sendDCBToken = async function (params) {
@@ -258,6 +270,7 @@ exports.sendDCBToken = async function (params) {
     }
     let newParams = [PrivateB[params[0]], null, -1, -1, txInfo]
     await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction)
+    return true
 }
 
 exports.sendGOVToken = async function (params) {
@@ -271,5 +284,6 @@ exports.sendGOVToken = async function (params) {
     }
     let newParams = [PrivateB[params[0]], null, -1, -1, txInfo]
     await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction)
+    return true
 }
 
