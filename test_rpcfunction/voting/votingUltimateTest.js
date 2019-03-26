@@ -2,7 +2,11 @@ let rpcfunc = require("../../constant-rpc/constant_rpc");
 const fs = require('fs')
 const rimraf = require('rimraf')
 
-// todo subtract tx fee for each tx in ground truth @____@
+// todo
+//  getallstate before save load checkpoint
+//  set time mining new block
+//  GetAll state
+//  subtract tx fee for each tx in ground truth @____@
 /*
     checkSingleValue{
         input: typename varname
@@ -90,16 +94,15 @@ describe('Test voting Board', async function () {
     text = text.split("\n");
     let i
     for (i = 0; i< text.length-2; i++) {
-                 this.timeout(Number.MAX_SAFE_INTEGER);
-                 let sttm = text[i].split(' ')
-                 console.log(sttm)
-                 let res = await blockchainFunc[sttm[0]](sttm.slice(1))
-                 console.log('duc')
-                 // let res = true
-                 let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1))
+        let sttm = text[i].split(' ')
+        console.log(sttm)
+        let res = await blockchainFunc[sttm[0]](sttm.slice(1))
+        console.log('duc')
+        // let res = true
+        let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1))
 
-                 console.log('wtf')
-                 console.log(res + " zzz " + res2)
-                 assert.ok(res === res2)
+        console.log('wtf')
+        console.log(res + " zzz " + res2)
+        assert.ok(res === res2)
     }
 });
