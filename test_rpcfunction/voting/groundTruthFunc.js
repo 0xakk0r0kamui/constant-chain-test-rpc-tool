@@ -136,9 +136,11 @@ exports.loadCheckpoint = async function(params) {
 };
 
 exports.getNumberConstant = async function(params) {
-    res = [];
+    let res = [];
     for (let i = 0; i< params.length; i++) {
-        res.push(global.MoG[params[i]])
+        let t = global.MoG[params[i]]
+        res.push(t)
+        console.log(typeof(t))
     }
     return res
 };
