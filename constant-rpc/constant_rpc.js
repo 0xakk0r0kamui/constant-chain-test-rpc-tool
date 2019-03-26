@@ -156,7 +156,7 @@ function rpc(method, client, params) {
   return new Promise((resolve,reject) => {
     client.request(method, params, function (err, response) {
       if (err != null) {
-        reject(err)
+          resolve(err)
       }
       res = {
         Response: response,

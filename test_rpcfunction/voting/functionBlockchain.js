@@ -164,9 +164,8 @@ SubmitTransaction = async function (params, fn) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
             var getResult = async () => {
-
                 flagResponse = await fn.call(shard, ...params);
-                if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                if ((flagResponse !== undefined) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {

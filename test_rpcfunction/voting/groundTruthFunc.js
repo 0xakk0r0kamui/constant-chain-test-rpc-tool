@@ -93,8 +93,8 @@ exports.sendMoney = async function(params) {
     sender = params[0];
     receiver = params[1];
     amount = params[2];
-    MoG[sender]-=  amount;
-    MoG[receiver] += amount;
+    MoG[sender] -=  parseInt(amount);
+    MoG[receiver] += parseInt(amount);
     return true;
 };
 
@@ -102,8 +102,8 @@ exports.sendDCBToken = async function(params) {
     sender = params[0];
     receiver = params[1];
     amount = params[2];
-    DCBTokenG[sender]-=  amount;
-    DCBTokenG[receiver] += amount;
+    DCBTokenG[sender]-=  parseInt(amount);
+    DCBTokenG[receiver] += parseInt(amount);
     return true
 };
 
@@ -111,8 +111,8 @@ exports.sendGOVToken = async function(params) {
     sender = params[0];
     receiver = params[1];
     amount = params[2];
-    GOVTokenG[sender]-=  amount;
-    GOVTokenG[receiver] += amount;
+    GOVTokenG[sender]-=  parseInt(amount);
+    GOVTokenG[receiver] += parseInt(amount);
     return true
 };
 
@@ -162,7 +162,7 @@ exports.getNumberGOVToken = async function(params) {
 exports.voteDCBBoard = async function(params) {
     let voter = params[0];
     let votee = params[1];
-    let amount = params[2];
+    let amount = parseInt(params[2]);
     if (VoteDCBBoardAmountG[votee] === undefined) {
         VoteDCBBoardAmountG[votee] = 0;
         VoteDCBBoardTableG[votee] = {};
@@ -179,7 +179,7 @@ exports.voteDCBBoard = async function(params) {
 exports.voteGOVBoard = async function(params) {
     let voter = params[0];
     let votee = params[1];
-    let amount = params[2];
+    let amount = parseInt(params[2]);
     if (VoteGOVBoardAmountG[votee] === undefined) {
         VoteGOVBoardAmountG[votee] = 0;
         VoteGOVBoardTableG[votee] = {};

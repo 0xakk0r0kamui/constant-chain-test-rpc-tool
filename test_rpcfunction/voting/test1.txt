@@ -22,7 +22,6 @@ sendMoney master khoa 200
 sendMoney master tbao 200
 sendMoney master dbao 200
 sendMoney master hbao 200
-checkAllValue
 sendDCBToken master huu 100
 sendDCBToken master duy 100
 sendDCBToken master duc 100
@@ -45,6 +44,7 @@ getNumberConstant khoa
 getNumberConstant tbao
 getNumberConstant dbao
 getNumberConstant hbao
+checkAllValue
 voteDCBBoard huu huu 15
 voteDCBBoard duy duy 15
 voteDCBBoard duc duc 15
