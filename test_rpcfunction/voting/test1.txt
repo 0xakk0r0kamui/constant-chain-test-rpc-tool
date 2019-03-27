@@ -54,5 +54,4 @@ voteDCBBoard khoa duy 15
 voteDCBBoard tbao duc 15
 voteDCBBoard dbao huu 15
 voteDCBBoard hbao duy 15
-submitGOVProposal proposalGOVOfMaster 1 huu master
-submitDCBProposal proposalDCBOfMaster 1 hy master
+

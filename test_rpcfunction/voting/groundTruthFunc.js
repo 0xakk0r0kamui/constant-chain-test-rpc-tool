@@ -124,6 +124,9 @@ exports.saveCheckpoint = async function(params) {
 
 exports.loadCheckpoint = async function(params) {
     let fileName = params[0];
+    if (fileName === 'c0') {
+        return true
+    }
     var fs = require('fs');
     let res = JSON.parse(fs.readFileSync(fileName))['res'];
     SetAllState(res);

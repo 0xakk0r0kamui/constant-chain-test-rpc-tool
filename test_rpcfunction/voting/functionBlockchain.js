@@ -1,6 +1,6 @@
 // =========================money and Token
-ListDCBBoardB = {};
-ListGOVBoardB = {};
+ListDCBBoardB = [];
+ListGOVBoardB = [];
 DCBTokenB = {};
 GOVTokenB = {};
 MoB = {};
