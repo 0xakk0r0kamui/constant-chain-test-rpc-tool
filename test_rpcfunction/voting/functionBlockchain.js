@@ -66,6 +66,8 @@ exports.setNewUser = async function (params) {
 
 exports.checkAllValue = async function (params) {
     MoB['master'] = 0;
+    DCBTokenB['master'] = 0;
+    GOVTokenB['master'] = 0;
     return {
         'ListDCBBoard': ListDCBBoardB,
         'ListGOVBoard': ListGOVBoardB,

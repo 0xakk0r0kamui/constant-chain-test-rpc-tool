@@ -71,6 +71,8 @@ function SetAllState(value) {
 
 exports.checkAllValue = async function(params) {
     MoG['master'] = 0;
+    DCBTokenG['master'] = 0;
+    GOVTokenG['master'] = 0;
     // return MoG;
     return {
         'ListDCBBoard': ListDCBBoardG,
