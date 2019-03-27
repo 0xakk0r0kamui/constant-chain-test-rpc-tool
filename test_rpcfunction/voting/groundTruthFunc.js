@@ -77,16 +77,17 @@ function SetAllState(value) {
 };
 
 exports.checkAllValue = async function(params) {
-    return MoG;
-    // return [
-    //     ListDCBBoardG,
-    //     ListGOVBoardG,
-    //     DCBTokenG,
-    //     GOVTokenG,
-    //     MoG,
-    //     PrivateG,
-    //     PaymentG
-    // ]
+    MoG['master'] = 0;
+    // return MoG;
+    return {
+        'ListDCBBoard': ListDCBBoardG,
+        'ListGOVBoard': ListGOVBoardG,
+        'DCBToken': DCBTokenG,
+        'GOVToken': GOVTokenG,
+        'Mo': MoG,
+        'Private': PrivateG,
+        'Payment': PaymentG
+    }
 }
 
 exports.sendMoney = async function(params) {
@@ -138,10 +139,10 @@ exports.loadCheckpoint = async function(params) {
 exports.getNumberConstant = async function(params) {
     let res = [];
     for (let i = 0; i< params.length; i++) {
-        let t = global.MoG[params[i]]
+        let t = MoG[params[i]]
         res.push(t)
-        console.log(typeof(t))
     }
+    console.log(res)
     return res
 };
 

@@ -64,17 +64,17 @@ exports.setNewUser = async function (params) {
     return true
 };
 
-exports.checkAllValue = async function (params) {
-    return MoG
-    // return [
-    //     ListDCBBoardB,
-    //     ListGOVBoardB,
-    //     DCBTokenB,
-    //     GOVTokenB,
-    //     MoB,
-    //     PrivateB,
-    //     PaymentB
-    // ]
+exports.checkAllValue = async function(params) {
+    MoB['master'] = 0;
+    return {
+        'ListDCBBoard': ListDCBBoardB,
+        'ListGOVBoard': ListGOVBoardB,
+        'DCBToken': DCBTokenB,
+        'GOVToken': GOVTokenB,
+        'Mo': MoB,
+        'Private': PrivateB,
+        'Payment': PaymentB
+    }
 }
 
 exports.saveCheckpoint = async function (params) {
@@ -126,7 +126,7 @@ GetTransactionByHash = async function (params) {
     return new Promise((resolve) => {
         var getResult = async () => {
             flagResponse = await shard.GetTransactionByHash(newParams);
-            if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+            if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                 resolve(flagResponse.Response.Result)
             } else {
                 setTimeout(() => {
@@ -145,7 +145,7 @@ exports.getNumberConstant = async function (params) {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
-                    flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[0]]);
+                    flagResponse = await shard.GetBalanceByPrivatekey(PrivateB[params[i]]);
                     if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                         resolve(flagResponse.Response.Result)
                     } else {
@@ -158,8 +158,8 @@ exports.getNumberConstant = async function (params) {
             })
         };
         let res = await waitForResult();
-        console.log("Account ", i, ": ", res);
-        console.log(typeof (res))
+        MoB[params[i]] = res;
+        console.log("Account ", params[i], ": ", res);
         assert.ok(res >= 0, "Balance cannot less than zero");
         rr.push(res)
     }
@@ -273,6 +273,7 @@ exports.getListDCBBoard = async function (params) {
     let res1 = res.Response.Result.sort(function (a, b){
         return a.localeCompare(b)
     });
+    ListDCBBoardB = res1
     return res1
 };
 
@@ -281,6 +282,7 @@ exports.getListGOVBoard = async function (params) {
     let res1 = res.Response.Result.sort(function (a, b){
         return a.localeCompare(b)
     });
+    ListGOVBoardB = res1
     return res1
 };
 let currentDCBConstitutionIndex = 0;
