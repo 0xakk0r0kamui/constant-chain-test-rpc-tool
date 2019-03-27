@@ -324,7 +324,7 @@ waitForNewConstitution = async function (params, fn) {
                     setTimeout(() => {
                         console.log("Spamming until get transaction hash");
                         getResult();
-                    }, 5000)
+                    }, 500)
                 }
             }
             getResult()
@@ -390,7 +390,7 @@ exports.sendGOVToken = async function (params) {
 exports.waitForNewDCBBoard = async function(params){
     let tmp = ListDCBBoardB;
     while (tmp != await exports.getListDCBBoard(params)) {
-        await sleep(100);
+        await sleep(200);
     }
     return true
 }
@@ -398,7 +398,7 @@ exports.waitForNewDCBBoard = async function(params){
 exports.waitForNewGOVBoard = async function(params){
     let tmp = ListGOVBoardB;
     while (tmp != await exports.getListGOVBoard(params)) {
-        await sleep(100);
+        await sleep(200);
     }
     return true
 }
@@ -433,6 +433,7 @@ exports.getNumberDCBToken = async function (params) {
     let res = {};
     for (let i = 0; i < params.length; i++) {
         res[params[i]] = await getNumberToken(PaymentB[params[i]], cs.ID_DCB);
+        DCBTokenB[params[i]] = res[params[i]];
     }
     return res
 };
@@ -441,6 +442,7 @@ exports.getNumberGOVToken = async function (params) {
     let res = {};
     for (let i = 0; i < params.length; i++) {
         res[params[i]] = await getNumberToken(PaymentB[params[i]], cs.ID_GOV)
+        GOVTokenB[params[i]] = res[params[i]];
     }
     return res
 }

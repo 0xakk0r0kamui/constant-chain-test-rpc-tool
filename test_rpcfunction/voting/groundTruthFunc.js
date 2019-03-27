@@ -141,6 +141,7 @@ exports.getNumberDCBToken = async function(params) {
     let res = {};
     for (let i = 0; i< params.length; i++) {
         res[params[i]] = DCBTokenG[params[i]];
+        console.log(params[i], res[params[i]])
     }
     return res
 };
@@ -149,6 +150,7 @@ exports.getNumberGOVToken = async function(params) {
     let res = {};
     for (let i = 0; i< params.length; i++) {
         res[params[i]] = GOVTokenG[params[i]];
+        console.log(params[i], res[params[i]])
     }
     return res
 };
