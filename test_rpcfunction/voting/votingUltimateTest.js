@@ -62,7 +62,7 @@ const rimraf = require('rimraf')
         SIDEEFFECT: set DCB/GOVBoardB
     }
     submitDCB/GOVProposal {
-        input: proposalname proposalparams submitter
+        input: proposalname constitutionindex paymentaddress submitter
     }
     voteDCB/GOVProposal {
         input: voter proposalname
