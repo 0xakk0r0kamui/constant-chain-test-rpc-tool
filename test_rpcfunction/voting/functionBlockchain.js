@@ -368,3 +368,37 @@ exports.waitForNewDCBBoard = async function(params){
 exports.waitForNewGOVBoard = async function(params){
     while (ListDCBBoardB != await exports.getListGOVBoard(params)) {}
 }
+
+getNumberToken = async function(params, tokenID){
+    let Res = 0;
+    let waitForResult = async () => {
+        return new Promise((resolve) => {
+            var getResult = async () => {
+                let flagResponse = await shard.GetListCustomTokenBalance(params);
+                if ((flagResponse.Error == null) && (flagResponse.Response.Error == null)) {
+                    resolve(flagResponse.Response.Result)
+                } else {
+                    setTimeout(() => {
+                        getResult();
+                    }, 3000)
+                }
+            }
+            getResult()
+        })
+    }
+    let res = await waitForResult();
+    res.ListCustomTokenBalance.forEach(customToken => {
+        if (customToken.TokenID == tokenID) {
+            Res = customToken.Amount;
+        }
+    });
+    return Res
+}
+
+exports.getNumberDCBToken = async function(params){
+    return await getNumberToken(params[0], cs.ID_DCB)
+}
+
+exports.getNumberGOVToken = async function(params){
+    return await getNumberToken(params[0], cs.ID_GOV)
+}
