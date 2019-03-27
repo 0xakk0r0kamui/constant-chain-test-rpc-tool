@@ -64,7 +64,7 @@ exports.setNewUser = async function (params) {
     return true
 };
 
-exports.checkAllValue = async function(params) {
+exports.checkAllValue = async function (params) {
     MoB['master'] = 0;
     return {
         'ListDCBBoard': ListDCBBoardB,
@@ -197,7 +197,7 @@ function buildSubmitDCBProposalParams(constitutionIndex, paymentAddress) {
 }
 
 function buildSubmitGOVProposalParams(constitutionIndex, paymentAddress) {
-    return utils.format( '{"DCBParams":{"ListSaleData":[{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":1000,"BuyingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","BuyingAmount":100,"DefaultBuyPrice":100,"SellingAsset":"0000000000000000000000000000000000000000000000000000000000000004","SellingAmount":150,"DefaultSellPrice":100},{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":2000,"BuyingAsset":"0000000000000000000000000000000000000000000000000000000000000004","BuyingAmount":250,"DefaultBuyPrice":100,"SellingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","SellingAmount":200,"DefaultSellPrice":100}],"MinLoanResponseRequire":0,"MinCMBApprovalRequire":0,"LateWithdrawResponseFine":0,"DividendAmount":0,"RaiseReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"Amount":10}},"SpendReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"ReserveMinPrice":100,"Amount":10}},"ListLoanParams":[{"InterestRate":0,"Maturity":0,"LiquidationStart":0}]},"ExecuteDuration":100,"Explanation":"","PaymentAddress":"%s","ConstitutionIndex":%s}', constitutionIndex, paymentAddress )
+    return utils.format('{"DCBParams":{"ListSaleData":[{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":1000,"BuyingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","BuyingAmount":100,"DefaultBuyPrice":100,"SellingAsset":"0000000000000000000000000000000000000000000000000000000000000004","SellingAmount":150,"DefaultSellPrice":100},{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":2000,"BuyingAsset":"0000000000000000000000000000000000000000000000000000000000000004","BuyingAmount":250,"DefaultBuyPrice":100,"SellingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","SellingAmount":200,"DefaultSellPrice":100}],"MinLoanResponseRequire":0,"MinCMBApprovalRequire":0,"LateWithdrawResponseFine":0,"DividendAmount":0,"RaiseReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"Amount":10}},"SpendReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"ReserveMinPrice":100,"Amount":10}},"ListLoanParams":[{"InterestRate":0,"Maturity":0,"LiquidationStart":0}]},"ExecuteDuration":100,"Explanation":"","PaymentAddress":"%s","ConstitutionIndex":%s}', constitutionIndex, paymentAddress)
 }
 
 exports.submitDCBProposal = async function (params) {
@@ -226,11 +226,11 @@ exports.submitGOVProposal = async function (params) {
 
 exports.voteDCBProposal = async function (params) {
     let voteParams = {
-        "BoardType":"dcb",
+        "BoardType": "dcb",
         "VoteProposalData": {
-        	"ProposalTxID" : ProposalTxIDB[params[1]],
-        	"ConstitutionIndex": 1,
-        	"VoterPayment": PaymentB[params[0]]
+            "ProposalTxID": ProposalTxIDB[params[1]],
+            "ConstitutionIndex": 1,
+            "VoterPayment": PaymentB[params[0]]
         }
     };
     let newParams = [PrivateB[params[0]], null, -1, -1, voteParams]
@@ -240,11 +240,11 @@ exports.voteDCBProposal = async function (params) {
 
 exports.voteGOVProposal = async function (params) {
     let voteParams = {
-        "BoardType":"gov",
+        "BoardType": "gov",
         "VoteProposalData": {
-        	"ProposalTxID" : ProposalTxIDB[param[1]],
-        	"ConstitutionIndex": 1,
-        	"VoterPayment": PaymentB[params[0]]
+            "ProposalTxID": ProposalTxIDB[param[1]],
+            "ConstitutionIndex": 1,
+            "VoterPayment": PaymentB[params[0]]
         }
     };
     let newParams = [PrivateB[params[0]], null, -1, -1, voteParams]
@@ -284,7 +284,7 @@ exports.voteGOVBoard = async function (params) {
     return true
 };
 
-function GetNameFromPayment(payment){
+function GetNameFromPayment(payment) {
     let res = Object.keys(PaymentB).map(
         x => [x, PaymentB[x]]
     ).filter(
@@ -337,12 +337,12 @@ waitForNewConstitution = async function (params, fn) {
 
 exports.getDCBConstitution = async function (params) {
     let res = await shard.GetDCBConstitution()
-    return (res)?((res.Error!=null)?(res.Error):((res.Response.Error!=null)?(res.Response.Error):(res.Response.Result))):null
+    return (res) ? ((res.Error != null) ? (res.Error) : ((res.Response.Error != null) ? (res.Response.Error) : (res.Response.Result))) : null
 };
 
 exports.getGOVConstitution = async function (params) {
     let res = await shard.GetGOVConstitution()
-    return (res)?((res.Error!=null)?(res.Error):((res.Response.Error!=null)?(res.Response.Error):(res.Response.Result))):null
+    return (res) ? ((res.Error != null) ? (res.Error) : ((res.Response.Error != null) ? (res.Response.Error) : (res.Response.Result))) : null
 };
 
 exports.waitForNewDCBConstitution = async function (params) {
@@ -389,15 +389,15 @@ exports.sendGOVToken = async function (params) {
     return true
 };
 
-exports.waitForNewDCBBoard = async function(params){
+exports.waitForNewDCBBoard = async function (params) {
     while (ListDCBBoardB != await exports.getListDCBBoard(params)) {}
 }
 
-exports.waitForNewGOVBoard = async function(params){
+exports.waitForNewGOVBoard = async function (params) {
     while (ListDCBBoardB != await exports.getListGOVBoard(params)) {}
 }
 
-getNumberToken = async function(params, tokenID){
+getNumberToken = async function (params, tokenID) {
     let Res = 0;
     let waitForResult = async () => {
         return new Promise((resolve) => {
@@ -423,10 +423,10 @@ getNumberToken = async function(params, tokenID){
     return Res
 }
 
-exports.getNumberDCBToken = async function(params){
+exports.getNumberDCBToken = async function (params) {
     return await getNumberToken(params[0], cs.ID_DCB)
 }
 
-exports.getNumberGOVToken = async function(params){
+exports.getNumberGOVToken = async function (params) {
     return await getNumberToken(params[0], cs.ID_GOV)
 }
