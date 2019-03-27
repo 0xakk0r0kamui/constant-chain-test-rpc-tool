@@ -48,7 +48,7 @@ function sleep(ms) {
 }
 
 exports.waitSeconds = async function (params) {
-    await sleep(parseInt(params[0]) * 500)
+    await sleep(parseInt(params[0]) * 500);
     return true
 };
 
@@ -192,19 +192,35 @@ SubmitTransaction = async function (params, fn) {
     }
 };
 
+function buildSubmitDCBProposalParams(constitutionIndex, paymentAddress) {
+    return utils.format('{"GOVParams":{"SalaryPerTx":0,"BasicSalary":0,"FeePerKbTx":0,"SellingBonds":{"BondName":"duc","BondSymbol":"duc","TotalIssue":0,"BondsToSell":0,"BondPrice":0,"Maturity":0,"BuyBackPrice":0,"StartSellingAt":0,"SellingWithin":0},"RefundInfo":{"ThresholdToLargeTx":0,"RefundAmount":0},"OracleNetwork":{"OraclePubKeys":[],"WrongTimesAllowed":0,"Quorum":0,"AcceptableErrorMargin":0,"UpdateFrequency":0,"OracleRewardMultiplier":0},"SellingGOVTokens":{"TotalIssue":0,"GOVTokensToSell":0,"GOVTokenPrice":0,"StartSellingAt":0,"SellingWithin":0}},"ExecuteDuration":100,"Explanation":"","PaymentAddress":"%s","ConstitutionIndex":%s}', paymentAddress, constitutionIndex)
+}
+
+function buildSubmitGOVProposalParams(constitutionIndex, paymentAddress) {
+    return utils.format( '{"DCBParams":{"ListSaleData":[{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":1000,"BuyingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","BuyingAmount":100,"DefaultBuyPrice":100,"SellingAsset":"0000000000000000000000000000000000000000000000000000000000000004","SellingAmount":150,"DefaultSellPrice":100},{"SaleID":"0000000000000000000000000000000000000000000000000000000000000000","EndBlock":2000,"BuyingAsset":"0000000000000000000000000000000000000000000000000000000000000004","BuyingAmount":250,"DefaultBuyPrice":100,"SellingAsset":"601b465a22f872cc50ae1f0c8ed84a78de3d649ffc784fc10000000000000000","SellingAmount":200,"DefaultSellPrice":100}],"MinLoanResponseRequire":0,"MinCMBApprovalRequire":0,"LateWithdrawResponseFine":0,"DividendAmount":0,"RaiseReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"Amount":10}},"SpendReserveData":{"0000000000000000000000000000000000000000000000000000000000000001":{"EndBlock":1000,"ReserveMinPrice":100,"Amount":10}},"ListLoanParams":[{"InterestRate":0,"Maturity":0,"LiquidationStart":0}]},"ExecuteDuration":100,"Explanation":"","PaymentAddress":"%s","ConstitutionIndex":%s}', constitutionIndex, paymentAddress )
+}
+
 exports.submitDCBProposal = async function (params) {
-    let DCBParams = params[1]
-    ProposalSubmitter[params[0]] = params[2]
-    let newParams = [PrivateB[params[2]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, 1)))), -1, -1, JSON.parse(DCBParams)]
-    ProposalTxIDB[params[0]] = await SubmitTransaction(newParams, shard.CreateAndSendSubmitDCBProposalTx);
+    let proposalName = params[0];
+    let constitutionIndex = parseInt(params[1]);
+    let paymentAddress = PaymentB[params[2]];
+    let submitter = params[3];
+    let DCBParams = buildSubmitDCBProposalParams(constitutionIndex, paymentAddress);
+    ProposalSubmitter[proposalName] = submitter;
+    let newParams = [PrivateB[submitter], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, 1)))), -1, -1, JSON.parse(DCBParams)];
+    ProposalTxIDB[proposalName] = await SubmitTransaction(newParams, shard.CreateAndSendSubmitDCBProposalTx);
     return true
 };
 
 exports.submitGOVProposal = async function (params) {
-    let GOVParams = params[1]
-    ProposalSubmitter[params[0]] = params[2]
-    let newParams = [PrivateB[params[2]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, 1)))), -1, -1, JSON.parse(GOVParams)]
-    ProposalTxIDB[params[0]] = await SubmitTransaction(newParams, shard.CreateAndSendSubmitGOVProposalTx);
+    let proposalName = params[0];
+    let constitutionIndex = parseInt(params[1]);
+    let paymentAddress = PaymentB[params[2]];
+    let submitter = params[3];
+    let GOVParams = buildSubmitGOVProposalParams(constitutionIndex, paymentAddress);
+    ProposalSubmitter[proposalName] = submitter;
+    let newParams = [PrivateB[submitter], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(cs.BURN_ADDR, 1)))), -1, -1, JSON.parse(GOVParams)];
+    ProposalTxIDB[proposalName] = await SubmitTransaction(newParams, shard.CreateAndSendSubmitGOVProposalTx);
     return true
 };
 
@@ -268,23 +284,35 @@ exports.voteGOVBoard = async function (params) {
     return true
 };
 
+function GetNameFromPayment(payment){
+    let res = Object.keys(PaymentB).map(
+        x => [x, PaymentB[x]]
+    ).filter(
+        x => x[1] === payment
+    )[0]
+    return res
+}
+
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
-    let res1 = res.Response.Result.sort(function (a, b){
-        return a.localeCompare(b)
-    });
-    ListDCBBoardB = res1
-    return res1
+    console.log(res.Response.Result);
+    let name = res.map(
+        x => GetNameFromPayment(x)
+    );
+    ListDCBBoardB = name;
+    return name
 };
 
 exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
-    let res1 = res.Response.Result.sort(function (a, b){
-        return a.localeCompare(b)
-    });
-    ListGOVBoardB = res1
-    return res1
+    console.log(res.Response.Result);
+    let name = res.map(
+        x => GetNameFromPayment(x)
+    );
+    ListGOVBoardB = name;
+    return name
 };
+
 let currentDCBConstitutionIndex = 0;
 let currentGOVConstitutionIndex = 0;
 waitForNewConstitution = async function (params, fn) {

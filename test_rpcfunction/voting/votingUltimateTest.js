@@ -62,7 +62,7 @@ const rimraf = require('rimraf')
         SIDEEFFECT: set DCB/GOVBoardB
     }
     submitDCB/GOVProposal {
-        input: proposalname proposalparams submitter
+        input: proposalname constitutionindex paymentaddress submitter
     }
     voteDCB/GOVProposal {
         input: voter proposalname
@@ -92,7 +92,7 @@ groundTruthFunc = require('./groundTruthFunc');
 
 describe('Test voting Board', async function () {
     let text
-    text = fs.readFileSync("test1.txt",'utf8');
+    text = fs.readFileSync("test2.txt",'utf8');
     text = text.split("\n");
     let i;
     for (i = 0; i< text.length-2; i++) {
