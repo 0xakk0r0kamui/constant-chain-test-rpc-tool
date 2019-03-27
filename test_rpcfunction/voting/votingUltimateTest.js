@@ -5,6 +5,7 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 // todo
+//  add pubkey trong test
 //  getallstate before save load checkpoint
 //  set time mining new block
 //  GetAll state
@@ -95,7 +96,7 @@ describe('Test voting Board', async function () {
     text = fs.readFileSync("test2.txt",'utf8');
     text = text.split("\n");
     let i;
-    for (i = 0; i< text.length-2; i++) {
+    for (i = 0; i< text.length-1; i++) {
         let sttm = text[i].split(' ');
         console.log(sttm);
         let res = await blockchainFunc[sttm[0]](sttm.slice(1));

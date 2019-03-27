@@ -41,17 +41,3 @@ sendDCBToken master dbao 100
 sendDCBToken master hbao 100
 getNumberConstant huu duy duc lam dung hieu hung khoa tbao dbao hbao
 saveCheckpoint c1
-getNumberDCBToken huu duy duc lam dung hieu hung khoa tbao dbao hbao
-checkAllValue
-voteDCBBoard huu huu 15
-voteDCBBoard duy duy 15
-voteDCBBoard duc duc 15
-voteDCBBoard lam huu 15
-voteDCBBoard dung duy 15
-voteDCBBoard hieu duc 15
-voteDCBBoard hung huu 15
-voteDCBBoard khoa duy 15
-voteDCBBoard tbao duc 15
-voteDCBBoard dbao huu 15
-voteDCBBoard hbao duy 15
-
