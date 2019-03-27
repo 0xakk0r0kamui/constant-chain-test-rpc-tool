@@ -239,19 +239,35 @@ exports.voteGOVBoard = async function (params) {
     return true
 };
 
+function GetNameFromPayment(payment){
+    let res = Object.keys(PaymentB).map(
+        x => [x, PaymentB[x]]
+    ).filter(
+        x => x[1] === payment
+    )[0]
+    return res
+}
+
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
-    ListDCBBoardB = res
-    return res.Response.Result
+    let name = res.map(
+        x => GetNameFromPayment(x)
+    );
+    ListDCBBoardB = name;
+    return name
 };
 
 exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
-    ListGOVBoardB = res
-    return res.Response.Result
+    let name = res.map(
+        x => GetNameFromPayment(x)
+    );
+    ListGOVBoardB = name;
+    return name
 };
+
 let currentDCBConstitutionIndex = 0;
 let currentGOVConstitutionIndex = 0;
 waitForNewConstitution = async function (params, fn) {
