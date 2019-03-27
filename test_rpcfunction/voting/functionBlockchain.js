@@ -296,6 +296,7 @@ function GetNameFromPayment(payment){
 exports.getListDCBBoard = async function (params) {
     let res = await shard.GetListDCBBoard();
     console.log(res.Response.Result);
+    res = res.Response.Result;
     let name = res.map(
         x => GetNameFromPayment(x)
     );
@@ -306,6 +307,7 @@ exports.getListDCBBoard = async function (params) {
 exports.getListGOVBoard = async function (params) {
     let res = await shard.GetListGOVBoard();
     console.log(res.Response.Result);
+    res = res.Response.Result;
     let name = res.map(
         x => GetNameFromPayment(x)
     );
@@ -390,9 +392,13 @@ exports.sendGOVToken = async function (params) {
 };
 
 exports.waitForNewDCBBoard = async function(params){
-    while (ListDCBBoardB != await exports.getListDCBBoard(params)) {}
+    let tmp = ListDCBBoardB
+    while (tmp != await exports.getListDCBBoard(params)) {}
+    return true
 }
 
 exports.waitForNewGOVBoard = async function(params){
-    while (ListDCBBoardB != await exports.getListGOVBoard(params)) {}
+    let tmp = ListGOVBoardB
+    while (tmp != await exports.getListGOVBoard(params)) {}
+    return true
 }
