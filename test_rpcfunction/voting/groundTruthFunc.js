@@ -1,6 +1,6 @@
 // =========================money and Token
-ListDCBBoardG = {};
-ListGOVBoardG = {};
+ListDCBBoardG = [];
+ListGOVBoardG = [];
 DCBTokenG = {};
 GOVTokenG = {};
 MoG = {};
@@ -30,12 +30,6 @@ DCBConstitutionG = {};
 GOVConstitutionG = {};
 ProposalTxIDG = {};
 ProposalSubmitter = {};
-
-
-exports.test = async function(params) {
-    console.log(global);
-    console.log(global['GGG']['a']);
-};
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -71,7 +65,6 @@ function GetAllState() {
 }
 
 function SetAllState(value) {
-    console.log(value);
     [ListDCBBoardG, ListGOVBoardG, DCBTokenG, GOVTokenG, MoG, PrivateG, PaymentG, VoteDCBBoardAmountG , VoteDCBBoardTableG , VoteGOVBoardAmountG , VoteGOVBoardTableG, OldVoteDCBBoardTableG, OldVoteGOVBoardTableG, OldListDCBBoardG, OldListGOVBoardG, VoteDCBProposalAmountG, VoteDCBProposalTableG, VoteGOVProposalAmountG, VoteGOVProposalTableG, DCBConstitutionG, GOVConstitutionG, ProposalTxIDG, ProposalSubmitter] = value;
     return true;
 };
@@ -120,7 +113,6 @@ exports.sendGOVToken = async function(params) {
 exports.saveCheckpoint = async function(params) {
     let fileName = './' + params[0];
     var fs = require('fs');
-    console.log(fileName);
     let res = JSON.stringify({
         'res': GetAllState()
     });
@@ -142,22 +134,21 @@ exports.getNumberConstant = async function(params) {
         let t = MoG[params[i]]
         res.push(t)
     }
-    console.log(res)
     return res
 };
 
 exports.getNumberDCBToken = async function(params) {
-    res = {};
+    let res = {};
     for (let i = 0; i< params.length; i++) {
-        res[params[i]] = global[DCBTokenG][params[i]]
+        res[params[i]] = DCBTokenG[params[i]];
     }
     return res
 };
 
 exports.getNumberGOVToken = async function(params) {
-    res = {};
+    let res = {};
     for (let i = 0; i< params.length; i++) {
-        res[params[i]] = global[GOVTokenG][params[i]]
+        res[params[i]] = GOVTokenG[params[i]];
     }
     return res
 };
@@ -197,6 +188,7 @@ exports.voteGOVBoard = async function(params) {
 };
 
 exports.getListDCBBoard = async function(params) {
+    console.log(ListDCBBoardG)
     return ListDCBBoardG
 };
 
@@ -306,8 +298,6 @@ exports.waitForNewGOVBoard = async function(params) {
 };
 
 exports.waitForNewDCBConstitution = async function (params) {
-    console.log(VoteDCBProposalTableG);
-    console.log(VoteDCBProposalAmountG);
     let list = Object.keys(VoteDCBProposalAmountG).map(function (key) {
         return [key, VoteDCBProposalAmountG[key]]
     } );
