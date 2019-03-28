@@ -34,7 +34,7 @@ ProposalSubmitterB = {};
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
-sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
+sourceDir = '/home/ag0st0/go/src/github.com/constant-money/constant-chain/'
 var util = require('util');
 
 let rpcfunc = require("../../constant-rpc/constant_rpc");
