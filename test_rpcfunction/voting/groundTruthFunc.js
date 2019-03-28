@@ -317,6 +317,7 @@ exports.waitForNewDCBBoard = async function(params) {
     });
     let lenList = list.length;
     if (lenList < DCBGovernorsLowerBound ){
+        console.log("not enough candidate");
         return true
     }
     //send token to vote fail
@@ -327,6 +328,7 @@ exports.waitForNewDCBBoard = async function(params) {
     // update new list board && Set value for old value
     OldListDCBBoardG = JSON.parse(JSON.stringify(ListDCBBoardG));
     ListDCBBoardG = newBoard.map(x => x[0]);
+    console.log(ListDCBBoardG)
     OldVoteDCBBoardTableG = JSON.parse(JSON.stringify(VoteDCBBoardTableG));
     VoteDCBBoardTableG = {};
     VoteDCBBoardAmountG = {};

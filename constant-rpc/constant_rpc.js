@@ -140,7 +140,6 @@ class ConstantNodeRPC {
   CreateAndSendVoteGOVBoardTransaction(privateKeys, magicParams1, magicParams2, magicParams3, voteInfo) {}
   GetListCustomTokenBalance(paymentAddress) {}
   CreateAndSendCustomTokenTransaction(privateKeys, magicParams1, magicParams2, magicParams3, voteInfo) {}
-  GetListDCBBoard() {}
   TestAppendListDCBBoard(paymentlist) {}
   SaveCheckPoint() {}
   LoadCheckPoint() {}
@@ -149,6 +148,8 @@ class ConstantNodeRPC {
   CreateAndSendVoteProposal(params) {}
   GetDCBConstitution() {}
   GetGOVConstitution() {}
+  GetListDCBBoardPayment() {}
+  GetListGOVBoardPayment(){}
 }
 
 // Implement virtual method

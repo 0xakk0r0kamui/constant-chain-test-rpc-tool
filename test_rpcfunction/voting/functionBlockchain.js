@@ -366,31 +366,42 @@ exports.voteGOVBoard = async function (params) {
     return true
 };
 
-function GetNameFromPubkey(payment) {
+function GetNameFromPubkey(pubkey) {
     let res = Object.keys(PubkeyB).map(
         x => [x, PubkeyB[x]]
     ).filter(
-        x => x[1] === payment
+        x => x[1] === pubkey
     )[0]
     return res
 }
 
+function GetNameFromPayment(payment) {
+    let res = Object.keys(PaymentB).map(
+        x => [x, PaymentB[x]]
+    ).filter(
+        x => x[1] === payment
+    ).map(
+        x => x[0]
+    );
+    return res
+}
+
 exports.getListDCBBoard = async function (params) {
-    let res = await shard.GetListDCBBoard();
+    let res = await shard.GetListDCBBoardPayment();
     res = res.Response.Result;
     console.log(res)
     let name = res.map(
-        x => GetNameFromPubkey(x)
+        x => GetNameFromPayment(x)
     );
     ListDCBBoardB = name;
     return name
 };
 
 exports.getListGOVBoard = async function (params) {
-    let res = await shard.GetListGOVBoard();
+    let res = await shard.GetListGOVBoardPayment();
     res = res.Response.Result;
     let name = res.map(
-        x => GetNameFromPubkey(x)
+        x => GetNameFromPayment(x)
     );
     ListGOVBoardB = name;
     return name
@@ -498,11 +509,15 @@ exports.waitForNewGOVBoard = async function(params){
 };
 
 function compareArrayAtomic(arr1, arr2) {
-    return arr1.every(
-        function(ele, index) {
-            return ele === arr2[index];
+    if (arr1.length !== arr2.length) {
+        return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            return false
         }
-    )
+    }
+    return true
 }
 
 

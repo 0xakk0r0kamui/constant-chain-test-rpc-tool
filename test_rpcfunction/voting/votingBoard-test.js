@@ -184,7 +184,7 @@ describe('Test voting Board', async function () {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
-                    flagResponse = await shard.GetListDCBBoard();
+                    flagResponse = await shard.GetListDCBBoardPayment();
                     console.log(flagResponse.Response.Result.length);
                     if ((flagResponse.Response.Error == null) && (flagResponse.Response.Result.length >1)) {
                         resolve(flagResponse.Response.Result);
@@ -286,7 +286,7 @@ describe('Test voting Board', async function () {
         let waitForResult = async () => {
             return new Promise((resolve) => {
                 var getResult = async () => {
-                    flagResponse = await shard.GetListDCBBoard();
+                    flagResponse = await shard.GetListDCBBoardPayment();
                     console.log(flagResponse.Response.Result.length);
                     if ((flagResponse.Response.Error == null) && (flagResponse.Response.Result.length >1)) {
                         resolve(flagResponse.Response.Result);
