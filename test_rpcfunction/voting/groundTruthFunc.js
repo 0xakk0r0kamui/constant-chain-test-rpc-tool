@@ -251,11 +251,12 @@ exports.voteGOVBoard = async function(params) {
 };
 
 exports.getListDCBBoard = async function(params) {
+    console.log('sfsfdsfjdsfoisdjfosfjofidsjf');
     console.log(ListDCBBoardG);
     return ListDCBBoardG;
 };
 
-exports.getListDCBBoard = async function(params) {
+exports.getListGOVBoard = async function(params) {
     return ListGOVBoardG;
 };
 
@@ -312,6 +313,7 @@ exports.waitForNewDCBBoard = async function(params) {
     let list = Object.keys(VoteDCBBoardAmountG).map(function(key){
         return [key,VoteDCBBoardAmountG[key]]
     } );
+    console.log(list);
     list.sort(function(fs, sc){
         return sc[1] - fs[1]
     });
@@ -327,8 +329,8 @@ exports.waitForNewDCBBoard = async function(params) {
     SendBackTokenOldDCBBoard();
     // update new list board && Set value for old value
     OldListDCBBoardG = JSON.parse(JSON.stringify(ListDCBBoardG));
-    ListDCBBoardG = newBoard.map(x => x[0]);
-    console.log(ListDCBBoardG)
+    ListDCBBoardG = newBoard.map(x => x[0]).sort();
+    console.log(ListDCBBoardG);
     OldVoteDCBBoardTableG = JSON.parse(JSON.stringify(VoteDCBBoardTableG));
     VoteDCBBoardTableG = {};
     VoteDCBBoardAmountG = {};
@@ -342,6 +344,7 @@ exports.waitForNewGOVBoard = async function(params) {
     let list = Object.keys(VoteGOVBoardAmountG).map(function(key){
         return [key,VoteGOVBoardAmountG[key]]
     } );
+    console.log(list);
     list.sort(function(fs, sc){
         return sc[1] - fs[1]
     });
@@ -356,7 +359,7 @@ exports.waitForNewGOVBoard = async function(params) {
     SendBackTokenOldGOVBoard();
     // update new list board && Set value for old value
     OldListGOVBoardG = JSON.parse(JSON.stringify(ListGOVBoardG));
-    ListGOVBoardG = newBoard.map(x => x[0]);
+    ListGOVBoardG = newBoard.map(x => x[0]).sort();
     OldVoteGOVBoardTableG = JSON.parse(JSON.stringify(VoteGOVBoardTableG));
     VoteGOVBoardTableG = {};
     VoteGOVBoardAmountG = {};
@@ -425,12 +428,16 @@ function SendRewardDCBProposalVoterAndSupporter(reward, constitution) {
         x => x[0]
     );
     rewardForEach = reward / voteForConstitution.length;
-    for (let candidate in voteForConstitution) {
-        Mob[candidate] += reward*0.3;
+    for (let i in voteForConstitution) {
+        let candidate = voteForConstitution[i];
+        MoG[candidate] += reward*0.3;
         let rewardForSupporter = reward*0.7;
         let list = OldVoteDCBBoardTableG[candidate];
         let listSupporter = Object.keys(list).map(x => [x,list[x]]);
-        let SumAmountVote = OldVoteDCBBoardAmountG;
+        let SumAmountVote = 0;
+        for (let i = 0; i < listSupporter.length; i++) {
+            SumAmountVote += listSupporter[i][1];
+        }
         for (let i = 0; i < listSupporter.length; i++) {
             let supporter = listSupporter[i];
             MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote
@@ -441,20 +448,24 @@ function SendRewardDCBProposalVoterAndSupporter(reward, constitution) {
 
 function SendRewardGOVProposalVoterAndSupporter(reward, constitution) {
     let list = Object.keys(VoteGOVProposalTableG).map(
-        x => (x, VoteGOVProposalTableG[x])
+        x => [x, VoteGOVProposalTableG[x]]
     );
     let voteForConstitution = list.filter(
-        x => x[1] === constitution
+        x => x[1] == constitution
     ).map(
         x => x[0]
     );
     rewardForEach = reward / voteForConstitution.length;
-    for (let candidate in voteForConstitution) {
-        Mob[candidate] += reward*0.3;
+    for (let i in voteForConstitution) {
+        let candidate = voteForConstitution[i];
+        MoG[candidate] += reward*0.3;
         let rewardForSupporter = reward*0.7;
         let list = OldVoteGOVBoardTableG[candidate];
         let listSupporter = Object.keys(list).map(x => [x,list[x]]);
-        let SumAmountVote = OldVoteGOVBoardAmountG;
+        let SumAmountVote = 0;
+        for (let i = 0; i < listSupporter.length; i++) {
+            SumAmountVote += listSupporter[i][1];
+        }
         for (let i = 0; i < listSupporter.length; i++) {
             let supporter = listSupporter[i];
             MoG[supporter[0]] += rewardForSupporter*supporter[1]/SumAmountVote

@@ -93,7 +93,7 @@ groundTruthFunc = require('./groundTruthFunc');
 
 describe('Test voting Board', async function () {
     let text
-    text = fs.readFileSync("test2.txt",'utf8');
+    text = fs.readFileSync("test3.txt",'utf8');
     text = text.split("\n");
     let i;
     for (i = 0; i< text.length-1; i++) {
@@ -104,6 +104,6 @@ describe('Test voting Board', async function () {
         let res2 = await groundTruthFunc[sttm[0]](sttm.slice(1));
 
         console.log(res + " zzz " + res2);
-        // assert.deepStrictEqual(res, res2)
+        assert.deepStrictEqual(res, res2)
     }
 });
