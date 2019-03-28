@@ -84,11 +84,68 @@ exports.checkAllValue = async function (params) {
     }
 }
 
+function GetAllState() {
+    return [ListDCBBoardB,
+        ListGOVBoardB,
+        DCBTokenB,
+        GOVTokenB,
+        MoB,
+        PrivateB,
+        PaymentB,
+        PubkeyB,
+        VoteDCBBoardAmountG ,
+        VoteDCBBoardTableG ,
+        VoteGOVBoardAmountG ,
+        VoteGOVBoardTableB,
+        OldVoteDCBBoardTableB,
+        OldVoteGOVBoardTableB,
+        OldListDCBBoardB,
+        OldListGOVBoardB,
+        VoteDCBProposalAmountB,
+        VoteDCBProposalTableB,
+        VoteGOVProposalAmountB,
+        VoteGOVProposalTableB,
+        DCBConstitutionB,
+        GOVConstitutionB,
+        ProposalTxIDB,
+        ProposalSubmitterB,
+    ];
+};
+
+function SetAllState(value) {
+    [
+        ListDCBBoardB,
+        ListGOVBoardB,
+        DCBTokenB,
+        GOVTokenB,
+        MoB,
+        PrivateB,
+        PaymentB,
+        PubkeyB,
+        VoteDCBBoardAmountB,
+        VoteDCBBoardTableB,
+        VoteGOVBoardAmountB,
+        VoteGOVBoardTableB,
+        OldVoteDCBBoardTableB,
+        OldVoteGOVBoardTableB,
+        OldListDCBBoardB,
+        OldListGOVBoardB,
+        VoteDCBProposalAmountB,
+        VoteDCBProposalTableB,
+        VoteGOVProposalAmountB,
+        VoteGOVProposalTableB,
+        DCBConstitutionB,
+        GOVConstitutionB,
+        ProposalTxIDB,
+        ProposalSubmitterG,
+    ] = value;
+    return true;
+};
 exports.saveCheckpoint = async function (params) {
-    dataDir = sourceDir + 'data';
-    checkpointDir = sourceDir + 'checkpoint/' + params[0];
-    err = rimraf.sync(checkpointDir);
-    x = await new Promise(function (resolve, reject) {
+    let dataDir = sourceDir + 'data';
+    let checkpointDir = sourceDir + 'checkpoint/' + params[0];
+    let err = rimraf.sync(checkpointDir);
+    let x = await new Promise(function (resolve, reject) {
         ncp(dataDir, checkpointDir, function (err) {
             if (err) {
                 console.log("savecheckpoint error");
@@ -98,15 +155,26 @@ exports.saveCheckpoint = async function (params) {
                 resolve(true)
             }
         });
-    })
-    return x
+    });
+    if (x === false) {
+        return false;
+    }
+
+    let fileName = sourceDir + 'checkpoint/W' + params[0];
+    let fs = require('fs');
+    let res = JSON.stringify({
+        'res': GetAllState()
+    });
+    fs.writeFileSync(fileName,res);
+
+    return true
 }
 
 exports.loadCheckpoint = async function (params) {
-    dataDir = sourceDir + 'data'
-    checkpointDir = sourceDir + 'checkpoint/' + params[0];
+    let dataDir = sourceDir + 'data'
+    let checkpointDir = sourceDir + 'checkpoint/' + params[0];
     rimraf.sync(dataDir);
-    f = await new Promise(function (resolve, reject) {
+    let f = await new Promise(function (resolve, reject) {
         ncp(checkpointDir, dataDir, function (err) {
             if (err) {
                 console.log("loadcheckpoint error");
@@ -117,7 +185,18 @@ exports.loadCheckpoint = async function (params) {
             }
         });
     });
-    return f
+    if (f === false) {
+        return false;
+    }
+    let fileName = 'W' + params[0];
+    if (fileName === 'Wc0') {
+        console.log('Wc0');
+        return true
+    }
+    let fs = require('fs');
+    let res = JSON.parse(fs.readFileSync(fileName))['res'];
+    SetAllState(res);
+    return true
 };
 
 GetTransactionByHash = async function (params) {
@@ -128,8 +207,8 @@ GetTransactionByHash = async function (params) {
         newParams = params
     }
     return new Promise((resolve) => {
-        var getResult = async () => {
-            flagResponse = await shard.GetTransactionByHash(newParams);
+        let getResult = async () => {
+            let flagResponse = await shard.GetTransactionByHash(newParams);
             if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                 resolve(flagResponse.Response.Result)
             } else {

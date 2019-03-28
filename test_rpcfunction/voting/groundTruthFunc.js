@@ -87,11 +87,37 @@ function GetAllState() {
              DCBConstitutionG,
              GOVConstitutionG,
              ProposalTxIDG,
-             ProposalSubmitterG];
+             ProposalSubmitterG,
+    ];
 };
 
 function SetAllState(value) {
-    [ListDCBBoardG, ListGOVBoardG, DCBTokenG, GOVTokenG, MoG, PrivateG, PaymentG, PubkeyG, VoteDCBBoardAmountG , VoteDCBBoardTableG , VoteGOVBoardAmountG , VoteGOVBoardTableG, OldVoteDCBBoardTableG, OldVoteGOVBoardTableG, OldListDCBBoardG, OldListGOVBoardG, VoteDCBProposalAmountG, VoteDCBProposalTableG, VoteGOVProposalAmountG, VoteGOVProposalTableG, DCBConstitutionG, GOVConstitutionG, ProposalTxIDG, ProposalSubmitterG] = value;
+    [
+        ListDCBBoardG,
+        ListGOVBoardG,
+        DCBTokenG,
+        GOVTokenG,
+        MoG,
+        PrivateG,
+        PaymentG,
+        PubkeyG,
+        VoteDCBBoardAmountG ,
+        VoteDCBBoardTableG ,
+        VoteGOVBoardAmountG ,
+        VoteGOVBoardTableG,
+        OldVoteDCBBoardTableG,
+        OldVoteGOVBoardTableG,
+        OldListDCBBoardG,
+        OldListGOVBoardG,
+        VoteDCBProposalAmountG,
+        VoteDCBProposalTableG,
+        VoteGOVProposalAmountG,
+        VoteGOVProposalTableG,
+        DCBConstitutionG,
+        GOVConstitutionG,
+        ProposalTxIDG,
+        ProposalSubmitterG,
+    ] = value;
     return true;
 };
 
