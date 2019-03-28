@@ -34,7 +34,7 @@ ProposalSubmitterB = {};
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
-sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
+sourceDir = '/home/ag0st0/go/src/github.com/constant-money/constant-chain/'
 var util = require('util');
 
 let rpcfunc = require("../../constant-rpc/constant_rpc");
@@ -387,8 +387,24 @@ function GetNameFromPayment(payment) {
 }
 
 exports.getListDCBBoard = async function (params) {
-    let res = await shard.GetListDCBBoardPayment();
-    res = res.Response.Result;
+    let waitForResult = async () => {
+        return new Promise((resolve) => {
+            var getResult = async () => {
+                flagResponse = await shard.GetListDCBBoardPayment();
+                if ( (flagResponse!==null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null) ){
+                    resolve(flagResponse.Response.Result)
+                } else {
+                    setTimeout(() => {
+                        console.log("Spamming until get transaction hash");
+                        getResult();
+                    }, 500)
+                }
+            }
+            getResult()
+        })
+    };
+
+    let res =waitForResult;
     console.log(res)
     let name = res.map(
         x => GetNameFromPayment(x)
@@ -398,8 +414,24 @@ exports.getListDCBBoard = async function (params) {
 };
 
 exports.getListGOVBoard = async function (params) {
-    let res = await shard.GetListGOVBoardPayment();
-    res = res.Response.Result;
+    let waitForResult = async () => {
+        return new Promise((resolve) => {
+            var getResult = async () => {
+                flagResponse = await shard.GetListDCBBoardPayment();
+                if ( (flagResponse!==null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null) ){
+                    resolve(flagResponse.Response.Result)
+                } else {
+                    setTimeout(() => {
+                        console.log("Spamming until get transaction hash");
+                        getResult();
+                    }, 500)
+                }
+            }
+            getResult()
+        })
+    };
+
+    let res =waitForResult;
     let name = res.map(
         x => GetNameFromPayment(x)
     );
