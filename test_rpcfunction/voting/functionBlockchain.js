@@ -486,11 +486,9 @@ exports.sendGOVToken = async function (params) {
 
 exports.waitForNewDCBBoard = async function(params){
     let tmp = ListDCBBoardB.slice();
-    console.log(tmp);
     let tmp2 = tmp.slice();
     while (compareArrayAtomic(tmp, tmp2)) {
         tmp2 = await exports.getListDCBBoard(params);
-        console.log(tmp,'wtffffff', tmp2);
         await sleep(200);
     }
     return true;
