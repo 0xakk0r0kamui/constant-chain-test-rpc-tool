@@ -168,7 +168,7 @@ exports.saveCheckpoint = async function (params) {
     fs.writeFileSync(fileName,res);
 
     return true
-}
+};
 
 exports.loadCheckpoint = async function (params) {
     let dataDir = sourceDir + 'data'
@@ -188,9 +188,9 @@ exports.loadCheckpoint = async function (params) {
     if (f === false) {
         return false;
     }
-    let fileName = 'W' + params[0];
-    if (fileName === 'Wc0') {
-        console.log('Wc0');
+    let fileName = sourceDir + 'checkpoint/W' + params[0];
+    if (params[0] === 'c0') {
+        console.log('c0');
         return true
     }
     let fs = require('fs');

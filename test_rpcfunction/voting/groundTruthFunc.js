@@ -184,6 +184,7 @@ exports.loadCheckpoint = async function(params) {
     var fs = require('fs');
     let res = JSON.parse(fs.readFileSync(fileName))['res'];
     SetAllState(res);
+    console.log(DCBTokenG);
     return true
 };
 
@@ -202,6 +203,7 @@ exports.getNumberDCBToken = async function(params) {
         res[params[i]] = DCBTokenG[params[i]];
         console.log(params[i], res[params[i]]);
     }
+    console.log(DCBTokenG);
     return res;
 };
 
