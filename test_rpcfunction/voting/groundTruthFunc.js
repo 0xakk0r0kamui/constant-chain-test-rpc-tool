@@ -87,11 +87,37 @@ function GetAllState() {
              DCBConstitutionG,
              GOVConstitutionG,
              ProposalTxIDG,
-             ProposalSubmitterG];
+             ProposalSubmitterG,
+    ];
 };
 
 function SetAllState(value) {
-    [ListDCBBoardG, ListGOVBoardG, DCBTokenG, GOVTokenG, MoG, PrivateG, PaymentG, PubkeyG, VoteDCBBoardAmountG , VoteDCBBoardTableG , VoteGOVBoardAmountG , VoteGOVBoardTableG, OldVoteDCBBoardTableG, OldVoteGOVBoardTableG, OldListDCBBoardG, OldListGOVBoardG, VoteDCBProposalAmountG, VoteDCBProposalTableG, VoteGOVProposalAmountG, VoteGOVProposalTableG, DCBConstitutionG, GOVConstitutionG, ProposalTxIDG, ProposalSubmitterG] = value;
+    [
+        ListDCBBoardG,
+        ListGOVBoardG,
+        DCBTokenG,
+        GOVTokenG,
+        MoG,
+        PrivateG,
+        PaymentG,
+        PubkeyG,
+        VoteDCBBoardAmountG ,
+        VoteDCBBoardTableG ,
+        VoteGOVBoardAmountG ,
+        VoteGOVBoardTableG,
+        OldVoteDCBBoardTableG,
+        OldVoteGOVBoardTableG,
+        OldListDCBBoardG,
+        OldListGOVBoardG,
+        VoteDCBProposalAmountG,
+        VoteDCBProposalTableG,
+        VoteGOVProposalAmountG,
+        VoteGOVProposalTableG,
+        DCBConstitutionG,
+        GOVConstitutionG,
+        ProposalTxIDG,
+        ProposalSubmitterG,
+    ] = value;
     return true;
 };
 
@@ -158,6 +184,7 @@ exports.loadCheckpoint = async function(params) {
     var fs = require('fs');
     let res = JSON.parse(fs.readFileSync(fileName))['res'];
     SetAllState(res);
+    console.log(DCBTokenG);
     return true
 };
 
@@ -176,6 +203,7 @@ exports.getNumberDCBToken = async function(params) {
         res[params[i]] = DCBTokenG[params[i]];
         console.log(params[i], res[params[i]]);
     }
+    console.log(DCBTokenG);
     return res;
 };
 
@@ -289,6 +317,7 @@ exports.waitForNewDCBBoard = async function(params) {
     });
     let lenList = list.length;
     if (lenList < DCBGovernorsLowerBound ){
+        console.log("not enough candidate");
         return true
     }
     //send token to vote fail
@@ -299,6 +328,7 @@ exports.waitForNewDCBBoard = async function(params) {
     // update new list board && Set value for old value
     OldListDCBBoardG = JSON.parse(JSON.stringify(ListDCBBoardG));
     ListDCBBoardG = newBoard.map(x => x[0]);
+    console.log(ListDCBBoardG)
     OldVoteDCBBoardTableG = JSON.parse(JSON.stringify(VoteDCBBoardTableG));
     VoteDCBBoardTableG = {};
     VoteDCBBoardAmountG = {};

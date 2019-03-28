@@ -30,6 +30,8 @@ getNumberConstant huu duc
 getNumberConstant duy duc lam dung hieu hung khoa tbao dbao hbao
 getNumberConstant huu duy duc lam dung hieu hung khoa tbao dbao hbao
 sendDCBToken master duy 100
+sendMoney master huu 200
+sendDCBToken master huu 100
 sendDCBToken master duc 100
 sendDCBToken master lam 100
 sendDCBToken master dung 100
@@ -40,4 +42,5 @@ sendDCBToken master tbao 100
 sendDCBToken master dbao 100
 sendDCBToken master hbao 100
 getNumberConstant huu duy duc lam dung hieu hung khoa tbao dbao hbao
+getNumberDCBToken huu duy duc lam dung hieu hung khoa tbao dbao hbao
 saveCheckpoint c1

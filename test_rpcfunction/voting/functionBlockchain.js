@@ -84,11 +84,68 @@ exports.checkAllValue = async function (params) {
     }
 }
 
+function GetAllState() {
+    return [ListDCBBoardB,
+        ListGOVBoardB,
+        DCBTokenB,
+        GOVTokenB,
+        MoB,
+        PrivateB,
+        PaymentB,
+        PubkeyB,
+        VoteDCBBoardAmountG ,
+        VoteDCBBoardTableG ,
+        VoteGOVBoardAmountG ,
+        VoteGOVBoardTableB,
+        OldVoteDCBBoardTableB,
+        OldVoteGOVBoardTableB,
+        OldListDCBBoardB,
+        OldListGOVBoardB,
+        VoteDCBProposalAmountB,
+        VoteDCBProposalTableB,
+        VoteGOVProposalAmountB,
+        VoteGOVProposalTableB,
+        DCBConstitutionB,
+        GOVConstitutionB,
+        ProposalTxIDB,
+        ProposalSubmitterB,
+    ];
+};
+
+function SetAllState(value) {
+    [
+        ListDCBBoardB,
+        ListGOVBoardB,
+        DCBTokenB,
+        GOVTokenB,
+        MoB,
+        PrivateB,
+        PaymentB,
+        PubkeyB,
+        VoteDCBBoardAmountB,
+        VoteDCBBoardTableB,
+        VoteGOVBoardAmountB,
+        VoteGOVBoardTableB,
+        OldVoteDCBBoardTableB,
+        OldVoteGOVBoardTableB,
+        OldListDCBBoardB,
+        OldListGOVBoardB,
+        VoteDCBProposalAmountB,
+        VoteDCBProposalTableB,
+        VoteGOVProposalAmountB,
+        VoteGOVProposalTableB,
+        DCBConstitutionB,
+        GOVConstitutionB,
+        ProposalTxIDB,
+        ProposalSubmitterG,
+    ] = value;
+    return true;
+};
 exports.saveCheckpoint = async function (params) {
-    dataDir = sourceDir + 'data';
-    checkpointDir = sourceDir + 'checkpoint/' + params[0];
-    err = rimraf.sync(checkpointDir);
-    x = await new Promise(function (resolve, reject) {
+    let dataDir = sourceDir + 'data';
+    let checkpointDir = sourceDir + 'checkpoint/' + params[0];
+    let err = rimraf.sync(checkpointDir);
+    let x = await new Promise(function (resolve, reject) {
         ncp(dataDir, checkpointDir, function (err) {
             if (err) {
                 console.log("savecheckpoint error");
@@ -98,15 +155,26 @@ exports.saveCheckpoint = async function (params) {
                 resolve(true)
             }
         });
-    })
-    return x
-}
+    });
+    if (x === false) {
+        return false;
+    }
+
+    let fileName = sourceDir + 'checkpoint/W' + params[0];
+    let fs = require('fs');
+    let res = JSON.stringify({
+        'res': GetAllState()
+    });
+    fs.writeFileSync(fileName,res);
+
+    return true
+};
 
 exports.loadCheckpoint = async function (params) {
-    dataDir = sourceDir + 'data'
-    checkpointDir = sourceDir + 'checkpoint/' + params[0];
+    let dataDir = sourceDir + 'data'
+    let checkpointDir = sourceDir + 'checkpoint/' + params[0];
     rimraf.sync(dataDir);
-    f = await new Promise(function (resolve, reject) {
+    let f = await new Promise(function (resolve, reject) {
         ncp(checkpointDir, dataDir, function (err) {
             if (err) {
                 console.log("loadcheckpoint error");
@@ -117,7 +185,18 @@ exports.loadCheckpoint = async function (params) {
             }
         });
     });
-    return f
+    if (f === false) {
+        return false;
+    }
+    let fileName = sourceDir + 'checkpoint/W' + params[0];
+    if (params[0] === 'c0') {
+        console.log('c0');
+        return true
+    }
+    let fs = require('fs');
+    let res = JSON.parse(fs.readFileSync(fileName))['res'];
+    SetAllState(res);
+    return true
 };
 
 GetTransactionByHash = async function (params) {
@@ -128,8 +207,8 @@ GetTransactionByHash = async function (params) {
         newParams = params
     }
     return new Promise((resolve) => {
-        var getResult = async () => {
-            flagResponse = await shard.GetTransactionByHash(newParams);
+        let getResult = async () => {
+            let flagResponse = await shard.GetTransactionByHash(newParams);
             if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                 resolve(flagResponse.Response.Result)
             } else {
@@ -287,31 +366,42 @@ exports.voteGOVBoard = async function (params) {
     return true
 };
 
-function GetNameFromPubkey(payment) {
+function GetNameFromPubkey(pubkey) {
     let res = Object.keys(PubkeyB).map(
         x => [x, PubkeyB[x]]
     ).filter(
-        x => x[1] === payment
+        x => x[1] === pubkey
     )[0]
     return res
 }
 
+function GetNameFromPayment(payment) {
+    let res = Object.keys(PaymentB).map(
+        x => [x, PaymentB[x]]
+    ).filter(
+        x => x[1] === payment
+    ).map(
+        x => x[0]
+    );
+    return res
+}
+
 exports.getListDCBBoard = async function (params) {
-    let res = await shard.GetListDCBBoard();
+    let res = await shard.GetListDCBBoardPayment();
     res = res.Response.Result;
     console.log(res)
     let name = res.map(
-        x => GetNameFromPubkey(x)
+        x => GetNameFromPayment(x)
     );
     ListDCBBoardB = name;
     return name
 };
 
 exports.getListGOVBoard = async function (params) {
-    let res = await shard.GetListGOVBoard();
+    let res = await shard.GetListGOVBoardPayment();
     res = res.Response.Result;
     let name = res.map(
-        x => GetNameFromPubkey(x)
+        x => GetNameFromPayment(x)
     );
     ListGOVBoardB = name;
     return name
@@ -419,11 +509,15 @@ exports.waitForNewGOVBoard = async function(params){
 };
 
 function compareArrayAtomic(arr1, arr2) {
-    return arr1.every(
-        function(ele, index) {
-            return ele === arr2[index];
+    if (arr1.length !== arr2.length) {
+        return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            return false
         }
-    )
+    }
+    return true
 }
 
 
@@ -433,12 +527,12 @@ getNumberToken = async function (params, tokenID) {
         return new Promise((resolve) => {
             var getResult = async () => {
                 let flagResponse = await shard.GetListCustomTokenBalance(params);
-                if ((flagResponse.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
+                if ((flagResponse!== null) && (flagResponse.Response!== undefined) && (flagResponse.Response.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {
                         getResult();
-                    }, 3000)
+                    }, 200)
                 }
             }
             getResult()
