@@ -433,12 +433,12 @@ getNumberToken = async function (params, tokenID) {
         return new Promise((resolve) => {
             var getResult = async () => {
                 let flagResponse = await shard.GetListCustomTokenBalance(params);
-                if ((flagResponse.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
+                if ((flagResponse!== null) && (flagResponse.Response!== undefined) && (flagResponse.Response.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {
                         getResult();
-                    }, 3000)
+                    }, 200)
                 }
             }
             getResult()
