@@ -34,7 +34,7 @@ ProposalSubmitterB = {};
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
-sourceDir = '/Users/retina_2015/go/src/github.com/constant-money/constant-chain/'
+sourceDir = '/home/ag0st0/go/src/github.com/constant-money/constant-chain/'
 var util = require('util');
 
 let rpcfunc = require("../../constant-rpc/constant_rpc");
@@ -93,9 +93,9 @@ function GetAllState() {
         PrivateB,
         PaymentB,
         PubkeyB,
-        VoteDCBBoardAmountG ,
-        VoteDCBBoardTableG ,
-        VoteGOVBoardAmountG ,
+        VoteDCBBoardAmountG,
+        VoteDCBBoardTableG,
+        VoteGOVBoardAmountG,
         VoteGOVBoardTableB,
         OldVoteDCBBoardTableB,
         OldVoteGOVBoardTableB,
@@ -165,7 +165,7 @@ exports.saveCheckpoint = async function (params) {
     let res = JSON.stringify({
         'res': GetAllState()
     });
-    fs.writeFileSync(fileName,res);
+    fs.writeFileSync(fileName, res);
 
     return true
 };
@@ -395,7 +395,7 @@ exports.getListDCBBoard = async function (params) {
         return new Promise((resolve) => {
             var getResult = async () => {
                 flagResponse = await shard.GetListDCBBoardPayment();
-                if ( (flagResponse!==null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null) ){
+                if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {
@@ -422,7 +422,7 @@ exports.getListGOVBoard = async function (params) {
         return new Promise((resolve) => {
             var getResult = async () => {
                 flagResponse = await shard.GetListDCBBoardPayment();
-                if ( (flagResponse!==null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null) ){
+                if ((flagResponse !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {
@@ -493,7 +493,7 @@ exports.waitForNewGOVConstitution = async function (params) {
 };
 
 exports.sendMoney = async function (params) {
-    let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))), -1, -1]
+    let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))), 10, -1]
     await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
     return true
 }
@@ -526,7 +526,7 @@ exports.sendGOVToken = async function (params) {
     return true
 };
 
-exports.waitForNewDCBBoard = async function(params){
+exports.waitForNewDCBBoard = async function (params) {
     let tmp = ListDCBBoardB.slice();
     let tmp2 = tmp.slice();
     while (compareArrayAtomic(tmp, tmp2)) {
@@ -536,13 +536,13 @@ exports.waitForNewDCBBoard = async function(params){
     return true;
 };
 
-exports.waitForNewGOVBoard = async function(params){
+exports.waitForNewGOVBoard = async function (params) {
     let tmp = ListGOVBoardB.slice();
     console.log(tmp);
     let tmp2 = tmp.slice();
     while (compareArrayAtomic(tmp, tmp2)) {
         tmp2 = await exports.getListGOVBoard(params);
-        console.log(tmp,'wtffffff', tmp2);
+        console.log(tmp, 'wtffffff', tmp2);
         await sleep(200);
     }
     return true;
@@ -567,7 +567,7 @@ getNumberToken = async function (params, tokenID) {
         return new Promise((resolve) => {
             var getResult = async () => {
                 let flagResponse = await shard.GetListCustomTokenBalance(params);
-                if ((flagResponse!== null) && (flagResponse.Response!== undefined) && (flagResponse.Response.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
+                if ((flagResponse !== null) && (flagResponse.Response !== undefined) && (flagResponse.Response.Result !== null) && (flagResponse.Error === null) && (flagResponse.Response.Error === null)) {
                     resolve(flagResponse.Response.Result)
                 } else {
                     setTimeout(() => {
