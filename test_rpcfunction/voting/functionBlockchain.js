@@ -443,8 +443,8 @@ exports.getListGOVBoard = async function (params) {
     return name
 };
 
-var currentDCBConstitutionIndex = 0;
-var currentGOVConstitutionIndex = 0;
+var currentDCBConstitutionIndex = 1;
+var currentGOVConstitutionIndex = 1;
 waitForNewConstitution = async function (params, fn, currentConstitutionIndex) {
     let waitForResult = async () => {
         return new Promise((resolve) => {
@@ -493,8 +493,8 @@ exports.waitForNewGOVConstitution = async function (params) {
 };
 
 exports.sendMoney = async function (params) {
-    let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))), 10, -1]
-    await SubmitTransaction(newParams, shard.CreateAndSendTransaction)
+    let newParams = [PrivateB[params[0]], JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))), 10, -1];
+    await SubmitTransaction(newParams, shard.CreateAndSendTransaction);
     return true
 }
 
@@ -507,8 +507,8 @@ exports.sendDCBToken = async function (params) {
         "TokenAmount": 0,
         "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),
     };
-    let newParams = [PrivateB[params[0]], null, -1, -1, txInfo]
-    await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction)
+    let newParams = [PrivateB[params[0]], null, 10, -1, txInfo];
+    await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction);
     return true
 };
 
@@ -521,7 +521,7 @@ exports.sendGOVToken = async function (params) {
         "TokenAmount": 0,
         "TokenReceivers": JSON.parse(JSON.stringify(helper.strMapToObj(new Map().set(PaymentB[params[1]], Number(params[2]))))),
     };
-    let newParams = [PrivateB[params[0]], null, -1, -1, txInfo];
+    let newParams = [PrivateB[params[0]], null, 10, -1, txInfo];
     await SubmitTransaction(newParams, shard.CreateAndSendCustomTokenTransaction);
     return true
 };
