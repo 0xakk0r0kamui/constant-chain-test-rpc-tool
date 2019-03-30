@@ -314,7 +314,7 @@ exports.voteDCBProposal = async function (params) {
         "BoardType": "dcb",
         "VoteProposalData": {
             "ProposalTxID": ProposalTxIDB[params[1]],
-            "ConstitutionIndex": 1,
+            "ConstitutionIndex": parseInt(params[2]),
             "VoterPayment": PaymentB[params[0]]
         }
     };
@@ -327,8 +327,8 @@ exports.voteGOVProposal = async function (params) {
     let voteParams = {
         "BoardType": "gov",
         "VoteProposalData": {
-            "ProposalTxID": ProposalTxIDB[param[1]],
-            "ConstitutionIndex": 1,
+            "ProposalTxID": ProposalTxIDB[params[1]],
+            "ConstitutionIndex": parseInt(params[2]),
             "VoterPayment": PaymentB[params[0]]
         }
     };
@@ -346,7 +346,7 @@ exports.voteDCBBoard = async function (params) {
         "TokenSymbol": "",
         "TokenTxType": 1,
         "PaymentAddress": PaymentB[params[1]],
-        "BoardIndex": 1
+        "BoardIndex": parseInt(params[2])
     }
     let newParams = [PrivateB[params[0]], null, -1, -1, voteInfo]
     await SubmitTransaction(newParams, shard.CreateAndSendVoteDCBBoardTransaction)
@@ -362,7 +362,7 @@ exports.voteGOVBoard = async function (params) {
         "TokenSymbol": "",
         "TokenTxType": 1,
         "PaymentAddress": PaymentB[params[1]],
-        "BoardIndex": 1
+        "BoardIndex": parseInt(params[2])
     }
     let newParams = [PrivateB[params[0]], null, -1, -1, voteInfo]
     await SubmitTransaction(newParams, shard.CreateAndSendVoteGOVBoardTransaction)

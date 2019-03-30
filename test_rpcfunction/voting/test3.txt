@@ -4,5 +4,4 @@ waitForNewDCBBoard
 getListDCBBoard
 submitGOVProposal proposalGOVOfMaster 2 master
 submitDCBProposal proposalDCBOfMaster 2 master
-voteDCBProposal huu proposalDCBOfMaster
 saveCheckpoint c3
