@@ -1,4 +1,3 @@
-loadCheckpoint c0
 setNewUser master 112t8rqJHgJp2TPpNpLNx34aWHB5VH5Pys3hVjjhhf9tctVeCNmX2zQLBqzHau6LpUbSV52kXtG2hRZsuYWkXWF5kw2v24RJq791fWmQxVqy 1Uv46Pu4pqBvxCcPw7MXhHfiAD5Rmi2xgEE7XB6eQurFAt4vSYvfyGn3uMMB1xnXDq9nRTPeiAZv5gRFCBDroRNsXJF1sxPSjNQtivuHk 183GBqPhSfcEFZP7MQFTnuLVuX2PRkd5HFA3qkqkLN4STghvxpw
 setNewUser huu 112t8rwnXGvVtCxY6iSbN4yiKwniQkMepRDYP6FnyXomPYvm2q2Zjit3wXeHWPhAypzKNPuTttB8G2U3kDwPK9EVWFivgZkjRcNJST5qRzxY 1Uv4RKDtciY6suDUDYzYiCAtuxmcALbyu4tsyscGKG2vcGKmEtVCoAwwFABEfFrz4NvwzA9XrKQnNL4x33nvQppvPAANhqggbXqc9rerE 18YEpNJ5bhfgwpXGzgPUu1FR8X128HdWG9HjaKgMUfDgJLbnyn6
 setNewUser duy 112t8s1Z51ucUKVZm8xu7TKAPpJoDJJcEV1p9Ncuf8H99a1GA26rRQevoKGyt9PQXkCBe6EvD4ykKULKj23JxHaAEHGCRBV4AKhzUTmTxw5v 1Uv2BB4TtBWWPbtP9zwZTbKjHrYD6U8YFJ9eu4uGWmnTE8vo49Xmg6teFRid1p5BDiNnnk2asa1yFPTfzv1dNFk3xy6QqbusGbabUaCzA 156vGtJE18SuunoMiPqSvqUAVJExYbCjNUVTaM3Tfu6kAjrN1Yy
@@ -13,11 +12,9 @@ setNewUser dbao 112t8rwK6yejq1SRU9SeKv4WQz8aQLjgg9JBgvp9CjJ7HV1HhhY9WBPAn9qX1JVb
 setNewUser hbao 112t8rxFaHMBHEM3v8ukZEgcSytYSDX6NbT5JfvrFE1NeokbrntG61rU5nGBa9KGm7nShtJm8B8pN5SVpKhZx7duqcDWSF59zxKwMMixfab2 1Uv4Ryab79LHt4muF1EbQz3VxQo6w9BxyqpYbbdkV81eaqGzFe9JP6rY24zifczyhN7KJTFz7mNMWybQvcVEQeCjbbMepuVgBFsTPqFJv 18ZFZeeT4LZXYoP7sP92z2L7KAbQQMRh3bRe6RqUL5P8hY5uaTS
 getNumberConstant master
 sendMoney master duy 200
-getNumberConstant duy
-getNumberDCBToken huu duy duc lam dung hieu hung khoa tbao dbao hbao
 sendMoney master duc 200
+sendMoney master huu 200
 sendMoney master lam 200
-getNumberConstant duy duc lam
 sendMoney master dung 200
 sendMoney master hieu 200
 sendMoney master hung 200
@@ -25,13 +22,7 @@ sendMoney master khoa 200
 sendMoney master tbao 200
 sendMoney master dbao 200
 sendMoney master hbao 200
-getNumberConstant huu
-getNumberConstant duc
-getNumberConstant huu duc
-getNumberConstant duy duc lam dung hieu hung khoa tbao dbao hbao
-getNumberConstant huu duy duc lam dung hieu hung khoa tbao dbao hbao
 sendDCBToken master duy 100
-sendMoney master huu 200
 sendDCBToken master huu 100
 sendDCBToken master duc 100
 sendDCBToken master lam 100
@@ -42,6 +33,13 @@ sendDCBToken master khoa 100
 sendDCBToken master tbao 100
 sendDCBToken master dbao 100
 sendDCBToken master hbao 100
-getNumberConstant huu duy duc lam dung hieu hung khoa tbao dbao hbao
-getNumberDCBToken huu duy duc lam dung hieu hung khoa tbao dbao hbao
-saveCheckpoint c1
+voteDCBBoard huu huu 15 2
+voteDCBBoard hung hung 15 2
+voteDCBBoard khoa khoa 15 2
+voteDCBBoard tbao tbao 15 2
+voteDCBBoard dbao dbao 15 2
+voteDCBBoard hbao hbao 15 2
+voteDCBBoard dung dung 15 2
+voteDCBBoard hieu hieu 15 2
+getNumberConstant master huu duy duc lam dung hieu hung khoa tbao dbao hbao
+getNumberDCBToken master huu duy duc lam dung hieu hung khoa tbao dbao hbao
